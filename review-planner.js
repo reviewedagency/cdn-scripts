@@ -520,13 +520,29 @@ document.addEventListener('DOMContentLoaded', async function () {
     // TASK 8:
     $('a[href].start-trial-button.immediate-purchase').on('click', async function (e) {
       const { data: member } = await window.$memberstackDom.getCurrentMember();
-      const { auth } = member;
+      const customerId = member?.id;
       e.preventDefault();
       const planName = $(this).data('plan');
-      const interval = $('.pricing-tab-link.active').attr('id');
-      if (['basic', 'pro'].includes(planName) && ['monthly', 'quarterly', 'yearly'].includes(interval)) {
-        const planInterval = capitalize(interval);
-        window.location.href = `https://reviewplanner.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=growth-monthly-${planName}-upfront-USD-${planInterval}&customer[email]=${auth.email}`;
+      const planInterval = $('.pricing-tab-link.active').attr('id');
+      if (customerId && ['basic', 'pro'].includes(planName) && ['monthly', 'quarterly', 'yearly'].includes(planInterval)) {
+        const response = await fetch('https://thereviewplanner-api-npfcm.ondigitalocean.app/chargebee/checkout-new-subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            customerId,
+            planName,
+            planInterval,
+          }),
+        });
+
+        const responseJson = await response.json();
+        console.log('🚀 ~ responseJson:', responseJson)
+        const checkoutUrl = responseJson?.data?.checkout_url;
+        if (checkoutUrl) {
+          window.location.href = checkoutUrl;
+        }
       }
     });
 
