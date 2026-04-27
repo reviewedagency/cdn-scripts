@@ -583,8 +583,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     $('a[href].start-trial-button.immediate-purchase:not(.disabled)').on(
       'click',
       async function (e) {
-        const { data: member } = await window.$memberstackDom.getCurrentMember()
-        const customerId = member?.id
+        const { data: currentJsonData } =
+          await window.$memberstackDom.getMemberJSON()
+
+        const customerId = currentJsonData?.customer_id
+
         e.preventDefault()
         $(e.target).closest('.immediate-purchase').addClass('disabled')
         $(e.target)
