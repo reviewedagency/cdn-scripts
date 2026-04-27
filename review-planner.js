@@ -518,10 +518,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     // TASK 8:
-    $('a[href].start-trial-button.immediate-purchase').on('click', async function (e) {
+    $('a[href].start-trial-button.immediate-purchase:not(.disabled)').on('click', async function (e) {
       const { data: member } = await window.$memberstackDom.getCurrentMember();
       const customerId = member?.id;
       e.preventDefault();
+      $(e.target).closest('.immediate-purchase').addClass('disabled');
+      $(e.target).closest('.immediate-purchase').find('.button-text-wrap').text('Loading...');
       const planName = $(this).data('plan');
       const planInterval = $('.pricing-tab-link.active').attr('id');
       if (customerId && ['basic', 'pro'].includes(planName) && ['monthly', 'quarterly', 'yearly'].includes(planInterval)) {
