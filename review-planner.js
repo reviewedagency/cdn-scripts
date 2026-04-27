@@ -540,7 +540,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
 
         const responseJson = await response.json();
-        console.log('🚀 ~ responseJson:', responseJson)
         const checkoutUrl = responseJson?.data?.checkout_url;
         if (checkoutUrl) {
           window.location.href = checkoutUrl;
