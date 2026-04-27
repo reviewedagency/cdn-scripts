@@ -587,6 +587,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           await window.$memberstackDom.getMemberJSON()
 
         const customerId = currentJsonData?.customer_id
+        console.log('🚀 ~ customerId:', customerId)
 
         e.preventDefault()
         $(e.target).closest('.immediate-purchase').addClass('disabled')
