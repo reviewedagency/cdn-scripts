@@ -363,8 +363,23 @@ $('a[href].start-trial-button')
   })
 
 document.addEventListener('DOMContentLoaded', async function () {
-  if (getUrlParam('upfront') === 'true') {
-    $('.add-account.step-2').show()
+  const { data: currentJsonData } = await window.$memberstackDom.getMemberJSON()
+  const userSubscriptions = currentJsonData?.subscriptions
+
+  if (Array.isArray(userSubscriptions) && userSubscriptions.length > 0) {
+    const unusedSubscriptionIndex = userSubscriptions.findIndex(subscription =>
+      Object.keys(subscription).every(key =>
+        [
+          'subscription_id',
+          'item_price_id_short',
+          'upgrade_section_shown'
+        ].includes(key)
+      )
+    )
+
+    if (unusedSubscriptionIndex >= 0) {
+      $('.add-account.step-2').show()
+    }
   }
 
   // TASK 4:
