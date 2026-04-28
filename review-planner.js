@@ -386,6 +386,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // TASK 4:
   window.$memberstackDom.getCurrentMember().then(member => {
+    const authenticatedUser = member.data?.auth
+    if (authenticatedUser) {
+      fpr('referral', { email: authenticatedUser.email })
+    }
     const customFields = member.data?.customFields
     if (
       customFields['trial-started']?.toLowerCase() === 'yes' &&
