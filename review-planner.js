@@ -9,6 +9,8 @@ function getUrlParam (name) {
     : decodeURIComponent(results[1].replace(/\+/g, ' '))
 }
 
+const delayExecution = ms => new Promise(resolve => setTimeout(resolve, ms))
+
 const businessName =
   getUrlParam('business_name') || localStorage.getItem('businessName')
 const email = getUrlParam('email')
@@ -589,6 +591,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             )
           }
         }
+
+        await delayExecution(10000)
 
         window.location.reload()
       }
