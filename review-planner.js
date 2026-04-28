@@ -695,6 +695,47 @@ document.addEventListener('DOMContentLoaded', async function () {
       $(this).text('Save').attr('disabled', false)
     })
 
+    $('.upgrade-account-button:not(.disabled)').on('click', async function (e) {
+      const { data: currentJsonData } =
+        await window.$memberstackDom.getMemberJSON()
+
+      const customerId = currentJsonData?.customer_id
+      const subscriptionId = $('.current-business-name').data('subscription-id')
+
+      e.preventDefault()
+      $(e.target).closest('.upgrade-account-button').addClass('disabled')
+      $(e.target)
+        .closest('.upgrade-account-button')
+        .find('.button_text')
+        .text('Processing...')
+      if (customerId && subscriptionId) {
+        const response = await fetch(
+          'https://thereviewplanner-api-npfcm.ondigitalocean.app/chargebee/checkout-subscription-upgrade',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              customerId,
+              subscriptionId
+            })
+          }
+        )
+
+        const responseJson = await response.json()
+        const checkoutUrl = responseJson?.data?.checkout_url
+        if (checkoutUrl) {
+          window.location.href = checkoutUrl
+        }
+        $(e.target).closest('.upgrade-account-button').removeClass('disabled')
+        $(e.target)
+          .closest('.upgrade-account-button')
+          .find('.button_text')
+          .text('Upgrade Account')
+      }
+    })
+
     function clearCustomDropdownDisplay () {
       $('.custom-dropdown-option.selected').removeClass('selected')
       $('.custom-dropdown').each(function () {
@@ -708,7 +749,9 @@ document.addEventListener('DOMContentLoaded', async function () {
       const { data: currentJsonData } =
         await window.$memberstackDom.getMemberJSON()
       const subscriptions = currentJsonData.subscriptions || []
-      const accountElement = $('.account-dropdown-card.manage-subscription').first()
+      const accountElement = $(
+        '.account-dropdown-card.manage-subscription'
+      ).first()
       $('.account-list-container').empty()
       subscriptions.forEach(async subscription => {
         const clonedElement = accountElement.clone()
