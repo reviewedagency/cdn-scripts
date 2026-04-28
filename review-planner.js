@@ -708,7 +708,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       const { data: currentJsonData } =
         await window.$memberstackDom.getMemberJSON()
       const subscriptions = currentJsonData.subscriptions || []
-      const accountElement = $('.account-dropdown-card').first()
+      const accountElement = $('.account-dropdown-card.manage-subscription').first()
       $('.account-list-container').empty()
       subscriptions.forEach(async subscription => {
         const clonedElement = accountElement.clone()
@@ -729,7 +729,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           clonedElement.find('.business-picture').attr('src', imageBase64)
         }
 
-        clonedElement.find('.manage-subscription').on('click', function (e) {
+        clonedElement.on('click', function (e) {
           e.preventDefault()
           const subscriptionId = $(this)
             .closest('.account-dropdown-card')
