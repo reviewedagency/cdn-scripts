@@ -1027,5 +1027,52 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     processDashboardInfo()
+
+    const firstPromoterDashboardContainer = document.getElementById(
+      'first-promoter-dashboard-container'
+    )
+
+    const defaultFirstPromoterDashboardLoading = () => {
+      firstPromoterDashboardContainer.innerHTML = ''
+      const loadingDiv = document.createElement('div')
+      loadingDiv.textContent = 'Loading your promoter dashboard...'
+      firstPromoterDashboardContainer.appendChild(loadingDiv)
+    }
+
+    const renderFirstPromoterDashboardIframe = accessToken => {
+      firstPromoterDashboardContainer.innerHTML = ''
+      const iframe = document.createElement('iframe')
+      iframe.height = '850px'
+      iframe.width = '100%'
+      iframe.frameBorder = '0'
+      iframe.allow = 'clipboard-write'
+      iframe.src = `https://reviewplanner.firstpromoter.com/iframe?tk=${accessToken}`
+      firstPromoterDashboardContainer.appendChild(iframe)
+    }
+
+    defaultFirstPromoterDashboardLoading()
+
+    try {
+      const fpTokenResponse = await fetch(
+        'https://thereviewplanner-api-npfcm.ondigitalocean.app/first-promoter/promoter-iframe-token',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            promoter_id: currentJsonData.first_promoter_id
+          })
+        }
+      )
+      const fpTokenResponseJson = await fpTokenResponse.json()
+      const accessToken = fpTokenResponseJson?.data?.accessToken
+      renderFirstPromoterDashboardIframe(accessToken)
+    } catch (error) {
+      console.log(error)
+      $('#first-promoter-dashboard-container div').html(
+        'Oops, there seems to have been a problem'
+      )
+    }
   }
 })
