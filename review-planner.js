@@ -1059,8 +1059,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     defaultFirstPromoterDashboardLoading()
 
     try {
-      console.log('🚀 ~ currentJsonData:', currentJsonData)
-      console.log('🚀 ~ currentJsonData:', currentJsonData.first_promoter_id)
+      const { data: member } = await window.$memberstackDom.getCurrentMember()
+      const customFields = member?.customFields
+
       const fpTokenResponse = await fetch(
         'https://thereviewplanner-api-npfcm.ondigitalocean.app/first-promoter/promoter-iframe-token',
         {
@@ -1069,7 +1070,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            promoterId: currentJsonData.first_promoter_id
+            promoterId: customFields?.['first-promoter-id']
           })
         }
       )
