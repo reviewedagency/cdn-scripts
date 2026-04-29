@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   // TASK 4:
   window.$memberstackDom.getCurrentMember().then(member => {
     const authenticatedUser = member.data?.auth
-    if (authenticatedUser) {
+    if (authenticatedUser && location.pathname.includes('dashboard')) {
       fpr('referral', { email: authenticatedUser.email })
     }
     const customFields = member.data?.customFields
