@@ -365,8 +365,8 @@ $('a[href].start-trial-button')
   })
 
 document.addEventListener('DOMContentLoaded', async function () {
-  const { data: currentJsonData } = await window.$memberstackDom.getMemberJSON()
-  const userSubscriptions = currentJsonData?.subscriptions
+  const { data: defaultJsonData } = await window.$memberstackDom.getMemberJSON()
+  const userSubscriptions = defaultJsonData?.subscriptions
 
   if (Array.isArray(userSubscriptions) && userSubscriptions.length > 0) {
     const unusedSubscriptionIndex = userSubscriptions.findIndex(subscription =>
