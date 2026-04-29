@@ -1040,14 +1040,20 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     const renderFirstPromoterDashboardIframe = accessToken => {
-      firstPromoterDashboardContainer.innerHTML = ''
-      const iframe = document.createElement('iframe')
-      iframe.height = '850px'
-      iframe.width = '100%'
-      iframe.frameBorder = '0'
-      iframe.allow = 'clipboard-write'
-      iframe.src = `https://reviewplanner.firstpromoter.com/iframe?tk=${accessToken}`
-      firstPromoterDashboardContainer.appendChild(iframe)
+      if (accessToken) {
+        firstPromoterDashboardContainer.innerHTML = ''
+        const iframe = document.createElement('iframe')
+        iframe.height = '850px'
+        iframe.width = '100%'
+        iframe.frameBorder = '0'
+        iframe.allow = 'clipboard-write'
+        iframe.src = `https://reviewplanner.firstpromoter.com/iframe?tk=${accessToken}`
+        firstPromoterDashboardContainer.appendChild(iframe)
+      } else {
+        $('#first-promoter-dashboard-container div').html(
+          'Oops, there seems to have been a problem'
+        )
+      }
     }
 
     defaultFirstPromoterDashboardLoading()
