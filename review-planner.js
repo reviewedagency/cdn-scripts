@@ -1061,7 +1061,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            promoter_id: currentJsonData.first_promoter_id
+            promoterId: currentJsonData.first_promoter_id
           })
         }
       )
