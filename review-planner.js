@@ -1,4 +1,6 @@
 var Webflow = Webflow || []
+const defaultProfilePictureUrl =
+  'https://cdn.prod.website-files.com/696f8d4c46ab7e98ed4966c6/696f8d4c46ab7e98ed49680a_Google%20Badge.svg'
 
 function getUrlParam (name) {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]')
@@ -778,6 +780,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             subscription.business_picture
           )
           clonedElement.find('.business-picture').attr('src', imageBase64)
+        } else {
+          clonedElement
+            .find('.business-picture')
+            .attr('src', defaultProfilePictureUrl)
         }
 
         clonedElement.on('click', function (e) {
@@ -832,6 +838,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             currentSubscription.business_picture
           )
           $('.current-business-picture').attr('src', imageBase64)
+        } else {
+          $('.current-business-picture').attr('src', defaultProfilePictureUrl)
         }
 
         $('.reviews-published').text(currentSubscription.reviews_published)
