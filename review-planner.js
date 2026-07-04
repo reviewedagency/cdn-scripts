@@ -1059,7 +1059,6 @@ document.addEventListener('DOMContentLoaded', async function () {
           for (let i = 1; i <= 10; i++) {
             const reviewValue =
               currentSubscription.review_history[`review_${i}`]
-            console.log('🚀 ~ loadReviewHistory ~ reviewValue:', reviewValue)
 
             if (reviewValue) {
               $(
@@ -1072,7 +1071,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         loadReviewHistory()
 
         $('.rp-timeline-basic .rp-tl-toggle').on('click', function () {
-          console.log('🚀 ~ processDashboardInfo ~ clicked:')
           loadReviewHistory()
         })
       }
