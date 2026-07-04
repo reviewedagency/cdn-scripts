@@ -1055,15 +1055,25 @@ document.addEventListener('DOMContentLoaded', async function () {
           $('.rp-timeline-pro').show()
         }
 
-        for (let i = 1; i <= 10; i++) {
-          const reviewValue = currentSubscription.review_history[`review_${i}`]
+        const loadReviewHistory = () => {
+          for (let i = 1; i <= 10; i++) {
+            const reviewValue =
+              currentSubscription.review_history[`review_${i}`]
+            console.log('🚀 ~ loadReviewHistory ~ reviewValue:', reviewValue)
 
-          if (reviewValue) {
-            $(
-              `.rp-timeline-${planName} .rp-tl-dates .rp-tl-date:nth-child(${i})`
-            ).html(`<strong>Review ${i}</strong> ${reviewValue}`)
+            if (reviewValue) {
+              $(
+                `.rp-timeline-${planName} .rp-tl-dates .rp-tl-date:nth-child(${i})`
+              ).html(`<strong>Review ${i}</strong> ${reviewValue}`)
+            }
           }
         }
+
+        loadReviewHistory()
+
+        $('.rp-timeline-basic .rp-tl-toggle').on('click', function () {
+          loadReviewHistory()
+        })
       }
     }
 
