@@ -1072,6 +1072,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         loadReviewHistory()
 
         $('.rp-timeline-basic .rp-tl-toggle').on('click', function () {
+          console.log('🚀 ~ processDashboardInfo ~ clicked:')
           loadReviewHistory()
         })
       }
