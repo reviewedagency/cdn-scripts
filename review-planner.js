@@ -1044,12 +1044,13 @@ document.addEventListener('DOMContentLoaded', async function () {
           $('.upgrade-section').hide()
         }
 
-        if (currentSubscription.item_price_id_short.toLowerCase() === 'basic') {
+        const planName = currentSubscription.item_price_id_short.toLowerCase()
+        if (planName === 'basic') {
           $('.rp-timeline-pro').hide()
           $('.rp-timeline-basic').show()
         }
 
-        if (currentSubscription.item_price_id_short.toLowerCase() === 'pro') {
+        if (planName === 'pro') {
           $('.rp-timeline-basic').hide()
           $('.rp-timeline-pro').show()
         }
@@ -1059,7 +1060,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
           if (reviewValue) {
             $(
-              `.rp-timeline-${currentSubscription.item_price_id_short.toLowerCase()} .rp-tl-dates .rp-tl-date:nth-child(${i})`
+              `.rp-timeline-${planName} .rp-tl-dates .rp-tl-date:nth-child(${i})`
             ).html(`<strong>Review ${i}</strong> ${reviewValue}`)
           }
         }
