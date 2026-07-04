@@ -560,7 +560,19 @@ document.addEventListener('DOMContentLoaded', async function () {
               targeting_gender: '',
               targeting_language: [],
               targeting_locations: [],
-              monthly_reviews: []
+              monthly_reviews: [],
+              review_history: {
+                review_1: '',
+                review_2: '',
+                review_3: '',
+                review_4: '',
+                review_5: '',
+                review_6: '',
+                review_7: '',
+                review_8: '',
+                review_9: '',
+                review_10: ''
+              }
             }
 
             await window.$memberstackDom.updateMemberJSON({
@@ -1030,6 +1042,26 @@ document.addEventListener('DOMContentLoaded', async function () {
           $('.upgrade-section').show()
         } else {
           $('.upgrade-section').hide()
+        }
+
+        if (currentSubscription.item_price_id_short.toLowerCase() === 'basic') {
+          $('.rp-timeline-pro').hide()
+          $('.rp-timeline-basic').show()
+        }
+
+        if (currentSubscription.item_price_id_short.toLowerCase() === 'pro') {
+          $('.rp-timeline-basic').hide()
+          $('.rp-timeline-pro').show()
+        }
+
+        for (let i = 1; i <= 10; i++) {
+          const reviewValue = currentSubscription.review_history[`review_${i}`]
+
+          if (reviewValue) {
+            $(
+              `.rp-timeline-${currentSubscription.item_price_id_short.toLowerCase()} .rp-tl-dates .rp-tl-date:nth-child(${i})`
+            ).html(`<strong>Review ${i}</strong> ${reviewValue}`)
+          }
         }
       }
     }
