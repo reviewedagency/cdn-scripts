@@ -173,31 +173,62 @@ const fetchBusinessInfo = async fId => {
 
 // TASK 5: Banner should only show when lead exists
 const processUserData = async fId => {
-  fetchBusinessInfo(fId)
-    .then(response => {
-      console.log('🚀 ~ processUserData ~ response:', response)
-      if (response.record_exist) {
-        $('.business-name').text(response.businessName)
-        $('.average-rating').text(
-          Number(response.averageRating || 0).toFixed(1)
-        )
-        $('.total-review-count').text(response.reviewCount)
-        $('.featured-image').attr('src', response.featuredImage)
-        localStorage.setItem('fId', response.fId)
-        localStorage.setItem('businessName', response.businessName)
-        localStorage.setItem('averageRating', response.averageRating)
-        localStorage.setItem('reviewCount', response.reviewCount)
-        localStorage.setItem('featuredImage', response.featuredImage)
-        localStorage.setItem('lastInfoFetch', new Date().getTime())
-        $('.home-preview-form').css('display', 'block')
-      } else {
-        localStorage.removeItem('fId')
-        $('.home-preview-form').hide()
-      }
-    })
-    .catch(error => {
-      console.log('Error fetching business info: ', error)
-    })
+  const timeDifference =
+    new Date().getTime() - localStorage.getItem('lastInfoFetch')
+
+  const shouldFetchInfo = timeDifference > 24 * 60 * 60 * 1000
+
+  if (getUrlParam('fId') === localStorage.getItem('fId') || !shouldFetchInfo) {
+    console.log('Using cached business info from localStorage')
+    $('.featured-image').attr('src', localStorage.getItem('featuredImage'))
+    $('.business-name').text(localStorage.getItem('businessName'))
+    $('.average-rating').text(
+      Number(localStorage.getItem('averageRating') || 0).toFixed(1)
+    )
+    $('.total-review-count').text(localStorage.getItem('reviewCount'))
+    const rating = Math.round(localStorage.getItem('averageRating'))
+    $('.banner-rating-container .star:lt(' + rating + ')').addClass('filled')
+    $('.banner-rating-container .star:gt(' + (rating - 1) + ')').removeClass(
+      'filled'
+    )
+    $('.home-preview-form').css('display', 'block')
+    localStorage.setItem('fId', fId)
+  } else {
+    console.log('Fetching business info from API')
+    fetchBusinessInfo(fId)
+      .then(response => {
+        if (response.record_exist) {
+          $('.business-name').text(response.businessName)
+          $('.average-rating').text(
+            Number(response.averageRating || 0).toFixed(1)
+          )
+          $('.total-review-count').text(response.reviewCount)
+          $('.featured-image').attr('src', response.featuredImage)
+          localStorage.setItem('fId', response.fId)
+          localStorage.setItem('businessName', response.businessName)
+          localStorage.setItem('averageRating', response.averageRating)
+          localStorage.setItem('reviewCount', response.reviewCount)
+          localStorage.setItem('featuredImage', response.featuredImage)
+          localStorage.setItem('lastInfoFetch', new Date().getTime())
+
+          const rating = Math.round(response.averageRating)
+          $('.banner-rating-container .star:lt(' + rating + ')').addClass(
+            'filled'
+          )
+          $(
+            '.banner-rating-container .star:gt(' + (rating - 1) + ')'
+          ).removeClass('filled')
+          $('.home-preview-form').css('display', 'block')
+        } else {
+          localStorage.removeItem('fId')
+          $('.home-preview-form').hide()
+        }
+      })
+      .catch(error => {
+        console.log('Error fetching business info: ', error)
+      })
+  }
+  $('.valid-user-info-container').css('display', 'block')
 }
 
 if (businessName) {
@@ -222,46 +253,14 @@ if (businessName) {
       .then(response => response.json())
       .then(result => {
         if (result.data) {
-          if (getUrlParam('fId') === localStorage.getItem('fId')) {
-            $('.featured-image').attr(
-              'src',
-              localStorage.getItem('featuredImage')
-            )
-            $('.business-name').text(localStorage.getItem('businessName'))
-            $('.average-rating').text(
-              Number(localStorage.getItem('averageRating') || 0).toFixed(1)
-            )
-            $('.total-review-count').text(localStorage.getItem('reviewCount'))
-
-            const timeDifference =
-              localStorage.getItem('lastInfoFetch') - new Date().getTime()
-            if (timeDifference > 24 * 60 * 60 * 1000) {
-              processUserData(fId)
-            }
-          } else {
-            processUserData(fId)
-          }
-          $('.valid-user-info-container').css('display', 'block')
-          localStorage.setItem('fId', fId)
+          processUserData(fId)
         }
       })
       .catch(error => console.log('error verifying info', error))
   }
 
   if (!email && localStorage.getItem('fId')) {
-    $('.featured-image').attr('src', localStorage.getItem('featuredImage'))
-    $('.business-name').text(localStorage.getItem('businessName'))
-    $('.average-rating').text(
-      Number(localStorage.getItem('averageRating') || 0).toFixed(1)
-    )
-    $('.total-review-count').text(localStorage.getItem('reviewCount'))
-
-    const timeDifference =
-      localStorage.getItem('lastInfoFetch') - new Date().getTime()
-    if (timeDifference > 24 * 60 * 60 * 1000) {
-      processUserData(localStorage.getItem('fId'))
-    }
-    $('.valid-user-info-container').css('display', 'block')
+    processUserData(localStorage.getItem('fId'))
   }
 }
 
