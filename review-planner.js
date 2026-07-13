@@ -181,11 +181,19 @@ const processUserData = async fId => {
   const shouldFetchInfo = timeDifference > 24 * 60 * 60 * 1000
 
   console.log('🚀 ~ shouldFetchInfo:', shouldFetchInfo)
-  console.log('🚀 ~ getUrlParam:', getUrlParam('fId'))
+  console.log('🚀 ~ getUrlParam:', getUrlParam('f_id'))
   console.log('🚀 ~ localStorage:', localStorage.getItem('fId'))
-  console.log('🚀 ~ fId Check:', getUrlParam('fId') === localStorage.getItem('fId'))
+  console.log(
+    '🚀 ~ fId Check:',
+    getUrlParam('f_id') === localStorage.getItem('fId')
+  )
 
-  if (getUrlParam('fId') === localStorage.getItem('fId') || !shouldFetchInfo) {
+  if (
+    (fIdExist &&
+      getUrlParam('f_id') === localStorage.getItem('fId') &&
+      !shouldFetchInfo) ||
+    localStorage.getItem('fId')
+  ) {
     $('.featured-image').attr('src', localStorage.getItem('featuredImage'))
     $('.business-name').text(localStorage.getItem('businessName'))
     $('.average-rating').text(
