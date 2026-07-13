@@ -180,14 +180,6 @@ const processUserData = async fId => {
 
   const shouldFetchInfo = timeDifference > 24 * 60 * 60 * 1000
 
-  console.log('🚀 ~ shouldFetchInfo:', shouldFetchInfo)
-  console.log('🚀 ~ getUrlParam:', getUrlParam('f_id'))
-  console.log('🚀 ~ localStorage:', localStorage.getItem('fId'))
-  console.log(
-    '🚀 ~ fId Check:',
-    getUrlParam('f_id') === localStorage.getItem('fId')
-  )
-
   if (
     (fIdExist &&
       getUrlParam('f_id') === localStorage.getItem('fId') &&
@@ -211,7 +203,6 @@ const processUserData = async fId => {
   } else {
     fetchBusinessInfo(fId)
       .then(response => {
-        console.log('🚀 ~ processUserData ~ response:', response)
         if (response.record_exist) {
           $('.business-name').text(response.businessName)
           $('.average-rating').text(
