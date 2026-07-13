@@ -175,9 +175,12 @@ const fetchBusinessInfo = async fId => {
 const processUserData = async fId => {
   fetchBusinessInfo(fId)
     .then(response => {
+      console.log('🚀 ~ processUserData ~ response:', response)
       if (response.record_exist) {
         $('.business-name').text(response.businessName)
-        $('.average-rating').text(response.averageRating)
+        $('.average-rating').text(
+          Number(response.averageRating || 0).toFixed(1)
+        )
         $('.total-review-count').text(response.reviewCount)
         $('.featured-image').attr('src', response.featuredImage)
         localStorage.setItem('fId', response.fId)
@@ -225,7 +228,9 @@ if (businessName) {
               localStorage.getItem('featuredImage')
             )
             $('.business-name').text(localStorage.getItem('businessName'))
-            $('.average-rating').text(localStorage.getItem('averageRating'))
+            $('.average-rating').text(
+              Number(localStorage.getItem('averageRating') || 0).toFixed(1)
+            )
             $('.total-review-count').text(localStorage.getItem('reviewCount'))
 
             const timeDifference =
@@ -246,7 +251,9 @@ if (businessName) {
   if (!email && localStorage.getItem('fId')) {
     $('.featured-image').attr('src', localStorage.getItem('featuredImage'))
     $('.business-name').text(localStorage.getItem('businessName'))
-    $('.average-rating').text(localStorage.getItem('averageRating'))
+    $('.average-rating').text(
+      Number(localStorage.getItem('averageRating') || 0).toFixed(1)
+    )
     $('.total-review-count').text(localStorage.getItem('reviewCount'))
 
     const timeDifference =
