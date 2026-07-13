@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           await window.$memberstackDom.getMemberJSON()
 
         if (!currentJsonData.email || !currentJsonData.customer_id) {
-          alert('Error: Missing email or customer ID. Please contact support.')
+          alert('Please contact support via Live Chat (Internal Code: EmailORCustomerIDMissing)')
           return
         }
 
