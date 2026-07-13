@@ -206,6 +206,7 @@ const processUserData = async fId => {
   } else {
     fetchBusinessInfo(fId)
       .then(response => {
+        console.log('🚀 ~ processUserData ~ response:', response)
         if (response.record_exist) {
           $('.business-name').text(response.businessName)
           $('.average-rating').text(
