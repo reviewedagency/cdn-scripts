@@ -529,10 +529,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         const { data: currentJsonData } =
           await window.$memberstackDom.getMemberJSON()
 
-        // if (!currentJsonData.email || !currentJsonData.customer_id) {
-        //   alert('Please contact support via Live Chat (Internal Code: EmailORCustomerIDMissing)')
-        //   return
-        // }
+        if (!currentJsonData.email || !currentJsonData.customer_id) {
+          alert('Please contact support via Live Chat (Internal Code: EmailORCustomerIDMissing)')
+          return
+        }
 
         if (Array.isArray(currentJsonData?.subscriptions)) {
           const updatedSubscriptions = currentJsonData.subscriptions
