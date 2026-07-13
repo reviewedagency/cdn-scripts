@@ -136,6 +136,7 @@ const fetchBusinessInfo = async fId => {
     businessName: '',
     averageRating: 0,
     reviewCount: 0,
+    fullAddress: '',
     featuredImage: ''
   }
 
@@ -154,6 +155,7 @@ const fetchBusinessInfo = async fId => {
       accountInfo['businessName'] = responseData.businessName
       accountInfo['averageRating'] = responseData.averageRating
       accountInfo['reviewCount'] = countFormatter(responseData.reviewCount)
+      accountInfo['fullAddress'] = responseData.fullAddress
       accountInfo['featuredImage'] = imageBase64
     }
 
@@ -179,13 +181,13 @@ const processUserData = async fId => {
   const shouldFetchInfo = timeDifference > 24 * 60 * 60 * 1000
 
   if (getUrlParam('fId') === localStorage.getItem('fId') || !shouldFetchInfo) {
-    console.log('Using cached business info from localStorage')
     $('.featured-image').attr('src', localStorage.getItem('featuredImage'))
     $('.business-name').text(localStorage.getItem('businessName'))
     $('.average-rating').text(
       Number(localStorage.getItem('averageRating') || 0).toFixed(1)
     )
     $('.total-review-count').text(localStorage.getItem('reviewCount'))
+    $('.full-address').text(localStorage.getItem('fullAddress'))
     const rating = Math.round(localStorage.getItem('averageRating'))
     $('.banner-rating-container .star:lt(' + rating + ')').addClass('filled')
     $('.banner-rating-container .star:gt(' + (rating - 1) + ')').removeClass(
@@ -194,7 +196,6 @@ const processUserData = async fId => {
     $('.home-preview-form').css('display', 'block')
     localStorage.setItem('fId', fId)
   } else {
-    console.log('Fetching business info from API')
     fetchBusinessInfo(fId)
       .then(response => {
         if (response.record_exist) {
@@ -204,10 +205,12 @@ const processUserData = async fId => {
           )
           $('.total-review-count').text(response.reviewCount)
           $('.featured-image').attr('src', response.featuredImage)
+          $('.full-address').text(response.fullAddress)
           localStorage.setItem('fId', response.fId)
           localStorage.setItem('businessName', response.businessName)
           localStorage.setItem('averageRating', response.averageRating)
           localStorage.setItem('reviewCount', response.reviewCount)
+          localStorage.setItem('fullAddress', response.fullAddress)
           localStorage.setItem('featuredImage', response.featuredImage)
           localStorage.setItem('lastInfoFetch', new Date().getTime())
 
