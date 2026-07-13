@@ -529,6 +529,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         const { data: currentJsonData } =
           await window.$memberstackDom.getMemberJSON()
 
+        if (!currentJsonData.email || !currentJsonData.customer_id) {
+          alert('Error: Missing email or customer ID. Please contact support.')
+          return
+        }
+
         if (Array.isArray(currentJsonData?.subscriptions)) {
           const updatedSubscriptions = currentJsonData.subscriptions
           const targetSubscriptionIndex = updatedSubscriptions.findIndex(
