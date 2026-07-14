@@ -2,7 +2,7 @@ var Webflow = Webflow || []
 const defaultProfilePictureUrl =
   'https://cdn.prod.website-files.com/696f8d4c46ab7e98ed4966c6/696f8d4c46ab7e98ed49680a_Google%20Badge.svg'
 
-function getUrlParam (name) {
+const getUrlParam = name => {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]')
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
     results = regex.exec(location.search)
@@ -12,6 +12,25 @@ function getUrlParam (name) {
 }
 
 const delayExecution = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+const getNewRating = rating => {
+  if (rating < 4.9) {
+    return 4.9
+  }
+
+  return rating
+}
+
+const getNewReviewsCount = reviews => {
+  if (reviews <= 200) {
+    return reviews + 240
+  }
+
+  if (reviews <= 1000) {
+    return reviews * 2
+  }
+  return reviews * 3
+}
 
 const businessName =
   getUrlParam('business_name') || localStorage.getItem('businessName')
@@ -200,6 +219,23 @@ const processUserData = async fId => {
     )
     $('.home-preview-form').css('display', 'block')
     localStorage.setItem('fId', fId)
+
+    const averageRatingAfter = getNewRating(
+      localStorage.getItem('averageRating')
+    )
+    const totalReviewCountAfter = getNewReviewsCount(
+      localStorage.getItem('reviewCount')
+    )
+    $('.average-rating-after').text(averageRatingAfter)
+    $('.total-review-count-after').text(totalReviewCountAfter)
+    $(
+      '.banner-rating-container-after .star:lt(' + averageRatingAfter + ')'
+    ).addClass('filled')
+    $(
+      '.banner-rating-container-after .star:gt(' +
+        (averageRatingAfter - 1) +
+        ')'
+    ).removeClass('filled')
   } else {
     fetchBusinessInfo(fId)
       .then(response => {
@@ -530,7 +566,9 @@ document.addEventListener('DOMContentLoaded', async function () {
           await window.$memberstackDom.getMemberJSON()
 
         if (!currentJsonData.email || !currentJsonData.customer_id) {
-          alert('Please contact support via Live Chat (Internal Code: EmailORCustomerIDMissing)')
+          alert(
+            'Please contact support via Live Chat (Internal Code: EmailORCustomerIDMissing)'
+          )
           return
         }
 
