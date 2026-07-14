@@ -14,22 +14,25 @@ const getUrlParam = name => {
 const delayExecution = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const getNewRating = rating => {
-  if (rating < 4.9) {
+  const numericRating = Number(rating)
+  if (numericRating < 4.9) {
     return 4.9
   }
 
-  return Number(rating).toFixed(1)
+  return numericRating.toFixed(1)
 }
 
 const getNewReviewsCount = reviews => {
-  if (reviews <= 200) {
-    return reviews + 240
+  const numericReviews = Number(reviews)
+  if (numericReviews <= 200) {
+    return numericReviews + 240
   }
 
-  if (reviews <= 1000) {
-    return reviews * 2
+  if (numericReviews <= 1000) {
+    return numericReviews * 2
   }
-  return reviews * 3
+
+  return numericReviews * 3
 }
 
 const businessName =
@@ -229,11 +232,11 @@ const processUserData = async fId => {
     $('.average-rating-after').text(averageRatingAfter)
     $('.total-review-count-after').text(totalReviewCountAfter)
     $(
-      '.banner-rating-container-after .star:lt(' + averageRatingAfter + ')'
+      '.banner-rating-container-after .star:lt(' + Math.round(averageRatingAfter) + ')'
     ).addClass('filled')
     $(
       '.banner-rating-container-after .star:gt(' +
-        (averageRatingAfter - 1) +
+        (Math.round(averageRatingAfter) - 1) +
         ')'
     ).removeClass('filled')
   } else {
@@ -270,12 +273,12 @@ const processUserData = async fId => {
           $('.total-review-count-after').text(totalReviewCountAfter)
           $(
             '.banner-rating-container-after .star:lt(' +
-              averageRatingAfter +
+              Math.round(averageRatingAfter) +
               ')'
           ).addClass('filled')
           $(
             '.banner-rating-container-after .star:gt(' +
-              (averageRatingAfter - 1) +
+              (Math.round(averageRatingAfter) - 1) +
               ')'
           ).removeClass('filled')
         } else {
