@@ -208,6 +208,7 @@ const processUserData = async fId => {
       !shouldFetchInfo) ||
     localStorage.getItem('fId')
   ) {
+    $('.featured-image').removeAttr('srcset')
     $('.featured-image').attr('src', localStorage.getItem('featuredImage'))
     $('.business-name').text(localStorage.getItem('businessName'))
     $('.average-rating').text(
@@ -232,7 +233,9 @@ const processUserData = async fId => {
     $('.average-rating-after').text(averageRatingAfter)
     $('.total-review-count-after').text(totalReviewCountAfter)
     $(
-      '.banner-rating-container-after .star:lt(' + Math.round(averageRatingAfter) + ')'
+      '.banner-rating-container-after .star:lt(' +
+        Math.round(averageRatingAfter) +
+        ')'
     ).addClass('filled')
     $(
       '.banner-rating-container-after .star:gt(' +
@@ -248,6 +251,7 @@ const processUserData = async fId => {
             Number(response.averageRating || 0).toFixed(1)
           )
           $('.total-review-count').text(response.reviewCount)
+          $('.featured-image').removeAttr('srcset')
           $('.featured-image').attr('src', response.featuredImage)
           $('.full-address').text(response.fullAddress)
           localStorage.setItem('fId', response.fId)
