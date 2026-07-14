@@ -18,7 +18,7 @@ const getNewRating = rating => {
     return 4.9
   }
 
-  return rating
+  return Number(rating).toFixed(1)
 }
 
 const getNewReviewsCount = reviews => {
@@ -263,6 +263,21 @@ const processUserData = async fId => {
             '.banner-rating-container .star:gt(' + (rating - 1) + ')'
           ).removeClass('filled')
           $('.home-preview-form').css('display', 'block')
+
+          const averageRatingAfter = getNewRating(response.averageRating)
+          const totalReviewCountAfter = getNewReviewsCount(response.reviewCount)
+          $('.average-rating-after').text(averageRatingAfter)
+          $('.total-review-count-after').text(totalReviewCountAfter)
+          $(
+            '.banner-rating-container-after .star:lt(' +
+              averageRatingAfter +
+              ')'
+          ).addClass('filled')
+          $(
+            '.banner-rating-container-after .star:gt(' +
+              (averageRatingAfter - 1) +
+              ')'
+          ).removeClass('filled')
         } else {
           localStorage.removeItem('fId')
           $('.home-preview-form').hide()
