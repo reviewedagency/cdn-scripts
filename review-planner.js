@@ -224,6 +224,13 @@ const processUserData = async fId => {
     $('.home-preview-form').css('display', 'block')
     localStorage.setItem('fId', fId)
 
+    $('.banner-rating-container-before .star:lt(' + rating + ')').addClass(
+      'filled'
+    )
+    $(
+      '.banner-rating-container-before .star:gt(' + (rating - 1) + ')'
+    ).removeClass('filled')
+
     const averageRatingAfter = getNewRating(
       localStorage.getItem('averageRating')
     )
@@ -270,6 +277,13 @@ const processUserData = async fId => {
             '.banner-rating-container .star:gt(' + (rating - 1) + ')'
           ).removeClass('filled')
           $('.home-preview-form').css('display', 'block')
+
+          $(
+            '.banner-rating-container-before .star:lt(' + rating + ')'
+          ).addClass('filled')
+          $(
+            '.banner-rating-container-before .star:gt(' + (rating - 1) + ')'
+          ).removeClass('filled')
 
           const averageRatingAfter = getNewRating(response.averageRating)
           const totalReviewCountAfter = getNewReviewsCount(response.reviewCount)
