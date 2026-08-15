@@ -884,7 +884,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           const imageBase64 = await convertImageToBase64(
             subscription.business_picture
           )
-          clonedElement.find('.business-picture').attr('src', imageBase64)
+          clonedElement.find('.business-picture').attr('src', imageBase64 || defaultProfilePictureUrl)
         } else {
           clonedElement
             .find('.business-picture')
