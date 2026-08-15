@@ -178,7 +178,7 @@ const fetchBusinessInfo = async fId => {
       accountInfo['averageRating'] = responseData.averageRating
       accountInfo['reviewCount'] = countFormatter(responseData.reviewCount)
       accountInfo['fullAddress'] = responseData.fullAddress
-      accountInfo['featuredImage'] = imageBase64
+      accountInfo['featuredImage'] = imageBase64 || defaultProfilePictureUrl
     }
 
     return accountInfo
@@ -412,7 +412,7 @@ const searchGoogleInfo = async ({ businessName, businessAddress }) => {
             reviewCount: item.reviewCount,
             latitude: item.latitude,
             longitude: item.longitude,
-            featuredImage: imageBase64,
+            featuredImage: imageBase64 || defaultProfilePictureUrl,
             businessId: item.businessId,
             placeId: item.placeId,
             cid: item.cid,
@@ -421,7 +421,8 @@ const searchGoogleInfo = async ({ businessName, businessAddress }) => {
             placeLink: item.placeLink,
             country: item.country,
             category: item.category,
-            featuredImageOriginal: item.featuredImage
+            featuredImageOriginal:
+              item.featuredImage || defaultProfilePictureUrl
           }
         })
       )
@@ -884,7 +885,9 @@ document.addEventListener('DOMContentLoaded', async function () {
           const imageBase64 = await convertImageToBase64(
             subscription.business_picture
           )
-          clonedElement.find('.business-picture').attr('src', imageBase64 || defaultProfilePictureUrl)
+          clonedElement
+            .find('.business-picture')
+            .attr('src', imageBase64 || defaultProfilePictureUrl)
         } else {
           clonedElement
             .find('.business-picture')
@@ -942,7 +945,10 @@ document.addEventListener('DOMContentLoaded', async function () {
           const imageBase64 = await convertImageToBase64(
             currentSubscription.business_picture
           )
-          $('.current-business-picture').attr('src', imageBase64)
+          $('.current-business-picture').attr(
+            'src',
+            imageBase64 || defaultProfilePictureUrl
+          )
         } else {
           $('.current-business-picture').attr('src', defaultProfilePictureUrl)
         }
