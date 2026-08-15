@@ -942,7 +942,6 @@ document.addEventListener('DOMContentLoaded', async function () {
           const imageBase64 = await convertImageToBase64(
             currentSubscription.business_picture
           )
-          console.log('🚀 ~ processDashboardInfo ~ imageBase64:', imageBase64)
           $('.current-business-picture').attr('src', imageBase64)
         } else {
           $('.current-business-picture').attr('src', defaultProfilePictureUrl)
