@@ -1145,6 +1145,10 @@ document.addEventListener('DOMContentLoaded', async function () {
           $('.rp-timeline-pro').hide()
           $('.rp-timeline-basic').show()
           $('.rp-timeline-current-plan-tag').hide()
+
+          if (planName !== 'basic') {
+            $('.rp-timeline-current-plan-tag').hide()
+          }
         }
 
         const loadReviewHistory = () => {
