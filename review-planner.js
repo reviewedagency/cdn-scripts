@@ -1147,7 +1147,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           $('.rp-timeline-current-plan-tag').hide()
 
           if (planName !== 'basic') {
-            $('.rp-timeline-current-plan-tag').hide()
+            $('.rp-tl-current').hide()
           }
         }
 
