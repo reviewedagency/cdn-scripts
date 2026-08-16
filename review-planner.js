@@ -1138,17 +1138,29 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const planName = currentSubscription.item_price_id_short.toLowerCase()
+        const isUnsubscribed = !['basic', 'pro'].includes(planName)
         if (planName === 'pro') {
           $('.rp-timeline-basic').hide()
           $('.rp-timeline-pro').show()
         } else {
           $('.rp-timeline-pro').hide()
           $('.rp-timeline-basic').show()
-          $('.rp-timeline-current-plan-tag').hide()
 
           if (planName !== 'basic') {
             $('.rp-tl-current').hide()
           }
+        }
+
+        if (isUnsubscribed) {
+          $('.rp-tl-hero-title').text('Subscribe to start getting reviews!')
+          $('.rp-tl-hero-sub').text(
+            'You are not currently getting any reviews, as you do not have an active plan.'
+          )
+        } else {
+          $('.rp-tl-hero-title').text("There's nothing left to do.")
+          $('.rp-tl-hero-sub').text(
+            'Just sit back and watch the reviews come in.'
+          )
         }
 
         const loadReviewHistory = () => {
