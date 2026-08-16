@@ -1138,14 +1138,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const planName = currentSubscription.item_price_id_short.toLowerCase()
-        if (planName === 'basic') {
-          $('.rp-timeline-pro').hide()
-          $('.rp-timeline-basic').show()
-        }
-
         if (planName === 'pro') {
           $('.rp-timeline-basic').hide()
           $('.rp-timeline-pro').show()
+        } else {
+          $('.rp-timeline-pro').hide()
+          $('.rp-timeline-basic').show()
+          $('.rp-timeline-current-plan-tag').hide()
         }
 
         const loadReviewHistory = () => {
