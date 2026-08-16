@@ -1139,6 +1139,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const planName = currentSubscription.item_price_id_short.toLowerCase()
         const isUnsubscribed = !['basic', 'pro'].includes(planName)
+
         if (planName === 'pro') {
           $('.rp-timeline-basic').hide()
           $('.rp-timeline-pro').show()
