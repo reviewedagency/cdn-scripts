@@ -1164,6 +1164,12 @@ document.addEventListener('DOMContentLoaded', async function () {
           )
         }
 
+        if(['quarterly', 'yearly'].includes(currentSubscription.billing_period_label?.toLowerCase())) {
+          $('.billing-period-visibility').show()
+        } else {
+          $('.billing-period-visibility').hide()
+        }
+
         const loadReviewHistory = () => {
           for (let i = 1; i <= 10; i++) {
             const reviewValue =
