@@ -1165,9 +1165,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         if(['quarterly', 'yearly'].includes(currentSubscription.billing_period_label?.toLowerCase())) {
-          $('.billing-period-visibility').show()
+          $('.rp-tl-upgrade').show()
         } else {
-          $('.billing-period-visibility').hide()
+          $('.rp-tl-upgrade').hide()
         }
 
         const loadReviewHistory = () => {
