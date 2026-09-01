@@ -57,7 +57,7 @@ Webflow.push(function () {
 // TASK 1 & TASK 7: Append URL params to each page click
 const currentParams = new URLSearchParams(window.location.search)
 if (currentParams.toString()) {
-  document.querySelectorAll('a[href]').forEach(link => {
+  document.querySelectorAll('a[href]:not([href="#"])').forEach(link => {
     if (link.href === '#') {
       return
     }
