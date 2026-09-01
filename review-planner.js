@@ -57,7 +57,7 @@ Webflow.push(function () {
 // TASK 1 & TASK 7: Append URL params to each page click
 const currentParams = new URLSearchParams(window.location.search)
 if (currentParams.toString()) {
-  document.querySelectorAll('a[href]:not([href="#"])').forEach(link => {
+  document.querySelectorAll('a[href]:not(.pricing-tab-link)').forEach(link => {
     if (link.href === '#') {
       return
     }
@@ -1164,7 +1164,11 @@ document.addEventListener('DOMContentLoaded', async function () {
           )
         }
 
-        if(['quarterly', 'yearly'].includes(currentSubscription.billing_period_label?.toLowerCase())) {
+        if (
+          ['quarterly', 'yearly'].includes(
+            currentSubscription.billing_period_label?.toLowerCase()
+          )
+        ) {
           $('.rp-tl-upgrade').hide()
         } else {
           $('.rp-tl-upgrade').show()
