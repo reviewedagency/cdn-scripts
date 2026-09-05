@@ -784,6 +784,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
       )
 
+      const { data: member } = await window.$memberstackDom.getCurrentMember()
+
       const { data: currentJsonData } =
         await window.$memberstackDom.getMemberJSON()
       const updatedSubscriptions = currentJsonData.subscriptions
@@ -805,6 +807,27 @@ document.addEventListener('DOMContentLoaded', async function () {
             subscriptions: updatedSubscriptions
           }
         })
+
+        await fetch(
+          'https://n8n.thereviewdirectory.com/webhook/798c23e1-c093-4809-9524-4ab42c218fb0',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              memberstack_id: member.id,
+              email: member.auth?.email,
+              business_name:
+                updatedSubscriptions[targetSubscriptionIndex].business_name,
+              chargebee_subscription_id:
+                updatedSubscriptions[targetSubscriptionIndex].subscription_id,
+              gender: selectedGender,
+              language: selectedLanguages,
+              location: selectedLocations
+            })
+          }
+        )
       }
 
       $(this).text('Save').attr('disabled', false)
