@@ -551,6 +551,9 @@ document.addEventListener('DOMContentLoaded', async function () {
               $('#select-profile .results-box').removeClass('green')
               $(this).addClass('green')
               $('.select-profile-add-account').removeClass('disabled')
+              $('.select-profile-add-account')
+                .find('.button-text-wrap')
+                .text('Add Account')
             })
           })
 
@@ -581,6 +584,9 @@ document.addEventListener('DOMContentLoaded', async function () {
       $('#add-google-profile-form input[type="text"]').attr('disabled', false)
       $('.add-google-profile-button').removeClass('disabled')
       $('.select-profile-add-account').addClass('disabled')
+      $('.select-profile-add-account')
+        .find('.button-text-wrap')
+        .text('Add Account')
       $('#select-profile').hide()
       $('#add-account-step-2').show()
     })
@@ -590,6 +596,10 @@ document.addEventListener('DOMContentLoaded', async function () {
       'click',
       async function () {
         $('.select-profile-add-account').addClass('disabled')
+        $(this)
+          .closest('.select-profile-add-account')
+          .find('.button-text-wrap')
+          .text('Processing...')
         const selectedIndex = $('#select-profile .results-box.green').data(
           'index'
         )
