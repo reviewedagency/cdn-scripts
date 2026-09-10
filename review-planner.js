@@ -440,7 +440,7 @@ const searchGoogleInfo = async ({ businessName, businessAddress }) => {
 }
 
 // TASK 1:
-let currentPlan = getUrlParam('plan') || 'monthly-basic'
+let currentPlan = getUrlParam('plan') || 'monthly-pro'
 $('a[href].start-trial-button')
   .not('.contact-sales,.immediate-purchase')
   .on('click', function (e) {
