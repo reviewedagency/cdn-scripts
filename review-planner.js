@@ -52,6 +52,10 @@ Webflow.push(function () {
   if (email) {
     $('input[type=email]').val(email)
   }
+  console.log('🚀 ~ businessName:', businessName)
+  if (businessName) {
+    $('input[name=business_name]').val(decodeURIComponent(businessName))
+  }
 })
 
 // TASK 1 & TASK 7: Append URL params to each page click
