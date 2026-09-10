@@ -473,6 +473,18 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     if (unusedSubscriptionIndex >= 0) {
       $('.add-account.step-2').show()
+
+      const fId = localStorage.getItem('fId')
+      const businessName = localStorage.getItem('businessName')
+
+      if (fId && businessName && userSubscriptions.length === 1) {
+        $('input#Business-Name').val(businessName)
+        $('input#Business-Address').val(fId)
+        $('#Business-Name').trigger('input')
+        $('#Business-Address').trigger('input')
+        $('.add-google-profile-button').removeClass('disabled')
+        $('.add-google-profile-button').click()
+      }
     }
   }
 
