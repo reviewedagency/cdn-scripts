@@ -52,7 +52,6 @@ Webflow.push(function () {
   if (email) {
     $('input[type=email]').val(email)
   }
-  console.log('🚀 ~ business name:', businessName)
   if (businessName) {
     $('input.business-name').val(decodeURIComponent(businessName))
   }
