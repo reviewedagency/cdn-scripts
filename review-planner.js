@@ -181,6 +181,34 @@ const fetchBusinessInfo = async fId => {
       accountInfo['averageRating'] = responseData.averageRating
       accountInfo['reviewCount'] = countFormatter(responseData.reviewCount)
       accountInfo['fullAddress'] = responseData.fullAddress
+      // accountInfo['funnelCompetitor1BusinessName'] = responseData.funnelCompetitor1BusinessName
+      accountInfo['funnelCompetitor1AverageRating'] =
+        responseData.funnelCompetitor1AverageRating
+      accountInfo['funnelCompetitor1ReviewCount'] = countFormatter(
+        responseData.funnelCompetitor1ReviewCount
+      )
+      accountInfo['funnelCompetitor2BusinessName'] =
+        responseData.funnelCompetitor2BusinessName
+      accountInfo['funnelCompetitor2AverageRating'] =
+        responseData.funnelCompetitor2AverageRating
+      accountInfo['funnelCompetitor2ReviewCount'] = countFormatter(
+        responseData.funnelCompetitor2ReviewCount
+      )
+      accountInfo['funnelCompetitor3BusinessName'] =
+        responseData.funnelCompetitor3BusinessName
+      accountInfo['funnelCompetitor3AverageRating'] =
+        responseData.funnelCompetitor3AverageRating
+      accountInfo['funnelCompetitor3ReviewCount'] = countFormatter(
+        responseData.funnelCompetitor3ReviewCount
+      )
+      accountInfo['funnel3blockReviews1ReviewText'] =
+        responseData.funnel3blockReviews1ReviewText
+      accountInfo['funnel3blockReviews2ReviewText'] =
+        responseData.funnel3blockReviews2ReviewText
+      accountInfo['funnel3blockReviews3ReviewText'] =
+        responseData.funnel3blockReviews3ReviewText
+      accountInfo['funnelBeforeReviewText'] =
+        responseData.funnelBeforeReviewText
       accountInfo['featuredImage'] = imageBase64
     }
 
