@@ -162,7 +162,20 @@ const fetchBusinessInfo = async fId => {
     averageRating: 0,
     reviewCount: 0,
     fullAddress: '',
-    featuredImage: ''
+    featuredImage: '',
+    // funnelCompetitor1BusinessName: '',
+    funnelCompetitor1AverageRating: 0,
+    funnelCompetitor1ReviewCount: 0,
+    funnelCompetitor2BusinessName: '',
+    funnelCompetitor2AverageRating: 0,
+    funnelCompetitor2ReviewCount: 0,
+    funnelCompetitor3BusinessName: '',
+    funnelCompetitor3AverageRating: 0,
+    funnelCompetitor3ReviewCount: 0,
+    funnel3blockReviews1ReviewText: '',
+    funnel3blockReviews2ReviewText: '',
+    funnel3blockReviews3ReviewText: '',
+    funnelBeforeReviewText: ''
   }
 
   try {
@@ -297,6 +310,19 @@ const processUserData = async fId => {
           localStorage.setItem('averageRating', response.averageRating)
           localStorage.setItem('reviewCount', response.reviewCount)
           localStorage.setItem('fullAddress', response.fullAddress)
+          // localStorage.setItem('funnelCompetitor1BusinessName', response.funnelCompetitor1BusinessName)
+          localStorage.setItem('funnelCompetitor1AverageRating', response.funnelCompetitor1AverageRating)
+          localStorage.setItem('funnelCompetitor1ReviewCount', response.funnelCompetitor1ReviewCount)
+          localStorage.setItem('funnelCompetitor2BusinessName', response.funnelCompetitor2BusinessName)
+          localStorage.setItem('funnelCompetitor2AverageRating', response.funnelCompetitor2AverageRating)
+          localStorage.setItem('funnelCompetitor2ReviewCount', response.funnelCompetitor2ReviewCount)
+          localStorage.setItem('funnelCompetitor3BusinessName', response.funnelCompetitor3BusinessName)
+          localStorage.setItem('funnelCompetitor3AverageRating', response.funnelCompetitor3AverageRating)
+          localStorage.setItem('funnelCompetitor3ReviewCount', response.funnelCompetitor3ReviewCount)
+          localStorage.setItem('funnel3blockReviews1ReviewText', response.funnel3blockReviews1ReviewText)
+          localStorage.setItem('funnel3blockReviews2ReviewText', response.funnel3blockReviews2ReviewText)
+          localStorage.setItem('funnel3blockReviews3ReviewText', response.funnel3blockReviews3ReviewText)
+          localStorage.setItem('funnelBeforeReviewText', response.funnelBeforeReviewText)
           localStorage.setItem('featuredImage', response.featuredImage)
           localStorage.setItem('lastInfoFetch', new Date().getTime())
 
