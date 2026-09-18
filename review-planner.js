@@ -343,20 +343,10 @@ const processUserData = async fId => {
     $('.full-address').text(localStorage.getItem('fullAddress'))
     const rating = Math.round(localStorage.getItem('averageRating'))
     processAverageRatingStars('.banner-rating-container', rating)
-    // $('.banner-rating-container .star:lt(' + rating + ')').addClass('filled')
-    // $('.banner-rating-container .star:gt(' + (rating - 1) + ')').removeClass(
-    //   'filled'
-    // )
+
     $('.home-preview-form').css('display', 'block')
     localStorage.setItem('fId', fId)
     processAverageRatingStars('.banner-rating-container-before', rating)
-
-    // $('.banner-rating-container-before .star:lt(' + rating + ')').addClass(
-    //   'filled'
-    // )
-    // $(
-    //   '.banner-rating-container-before .star:gt(' + (rating - 1) + ')'
-    // ).removeClass('filled')
 
     const averageRatingAfter = getNewRating(
       localStorage.getItem('averageRating')
@@ -370,16 +360,6 @@ const processUserData = async fId => {
       '.banner-rating-container-after',
       averageRatingAfter
     )
-    // $(
-    //   '.banner-rating-container-after .star:lt(' +
-    //     Math.round(averageRatingAfter) +
-    //     ')'
-    // ).addClass('filled')
-    // $(
-    //   '.banner-rating-container-after .star:gt(' +
-    //     (Math.round(averageRatingAfter) - 1) +
-    //     ')'
-    // ).removeClass('filled')
 
     if (location.pathname.includes('/funnel')) {
       processFunnelData()
@@ -458,21 +438,10 @@ const processUserData = async fId => {
 
           const rating = Math.round(response.averageRating)
           processAverageRatingStars('.banner-rating-container', rating)
-          // $('.banner-rating-container .star:lt(' + rating + ')').addClass(
-          //   'filled'
-          // )
-          // $(
-          //   '.banner-rating-container .star:gt(' + (rating - 1) + ')'
-          // ).removeClass('filled')
+
           $('.home-preview-form').css('display', 'block')
 
           processAverageRatingStars('.banner-rating-container-before', rating)
-          // $(
-          //   '.banner-rating-container-before .star:lt(' + rating + ')'
-          // ).addClass('filled')
-          // $(
-          //   '.banner-rating-container-before .star:gt(' + (rating - 1) + ')'
-          // ).removeClass('filled')
 
           const averageRatingAfter = getNewRating(response.averageRating)
           const totalReviewCountAfter = getNewReviewsCount(response.reviewCount)
@@ -482,16 +451,6 @@ const processUserData = async fId => {
             '.banner-rating-container-after',
             averageRatingAfter
           )
-          // $(
-          //   '.banner-rating-container-after .star:lt(' +
-          //     Math.round(averageRatingAfter) +
-          //     ')'
-          // ).addClass('filled')
-          // $(
-          //   '.banner-rating-container-after .star:gt(' +
-          //     (Math.round(averageRatingAfter) - 1) +
-          //     ')'
-          // ).removeClass('filled')
 
           if (location.pathname.includes('/funnel')) {
             processFunnelData()
@@ -1179,13 +1138,6 @@ document.addEventListener('DOMContentLoaded', async function () {
           '.business-rating-container',
           currentSubscription.business_rating
         )
-        // const rating = Math.round(currentSubscription.business_rating)
-        // $(
-        //   '.business-rating-container .svg-default:lt(' + rating + ')'
-        // ).addClass('filled')
-        // $(
-        //   '.business-rating-container .svg-default:gt(' + (rating - 1) + ')'
-        // ).removeClass('filled')
 
         if (currentSubscription.business_picture) {
           const imageBase64 = await convertImageToBase64(
