@@ -35,6 +35,87 @@ const getNewReviewsCount = reviews => {
   return numericReviews * 3
 }
 
+const truncateBusinessName = (name, limit = 20) => {
+  if (!name) return ''
+
+  return name.length > limit ? `${name.slice(0, limit)}...` : name
+}
+
+const processAverageRatingStars = (selector, rating) => {
+  const roundedRating = Math.round(rating)
+  $(`${selector} .star:lt(${roundedRating})`).addClass('filled')
+  $(`${selector} .star:gt(${roundedRating - 1})`).removeClass('filled')
+}
+
+const processFunnelData = () => {
+  $('.business-name-clean').text(localStorage.getItem('businessNameClean'))
+  $('.business-name-truncate').text(
+    truncateBusinessName(localStorage.getItem('businessName'))
+  )
+  $('.average-rating-funnel').text(localStorage.getItem('averageRating'))
+  processAverageRatingStars(
+    '.average-rating-stars-funnel',
+    localStorage.getItem('averageRating')
+  )
+  $('.review-count-funnel').text(localStorage.getItem('reviewCount'))
+  $('.municipality-funnel').text(localStorage.getItem('municipalityClean'))
+  $('.categories-funnel').text(localStorage.getItem('categoriesClean'))
+  $('.funnel-competitor1-average-rating').text(
+    localStorage.getItem('funnelCompetitor1AverageRating')
+  )
+  processAverageRatingStars(
+    '.average-rating-stars-funnel',
+    localStorage.getItem('funnelCompetitor1AverageRating')
+  )
+  $('.funnel-competitor1-review-count').text(
+    localStorage.getItem('funnelCompetitor1ReviewCount')
+  )
+  $('.funnel-competitor2-business-name').text(
+    truncateBusinessName(localStorage.getItem('funnelCompetitor2BusinessName'))
+  )
+  $('.funnel-competitor2-average-rating').text(
+    localStorage.getItem('funnelCompetitor2AverageRating')
+  )
+  processAverageRatingStars(
+    '.average-rating-stars-funnel',
+    localStorage.getItem('funnelCompetitor2AverageRating')
+  )
+  $('.funnel-competitor2-review-count').text(
+    localStorage.getItem('funnelCompetitor2ReviewCount')
+  )
+  $('.funnel-competitor3-business-name').text(
+    truncateBusinessName(localStorage.getItem('funnelCompetitor3BusinessName'))
+  )
+  $('.funnel-competitor3-average-rating').text(
+    localStorage.getItem('funnelCompetitor3AverageRating')
+  )
+  processAverageRatingStars(
+    '.average-rating-stars-funnel',
+    localStorage.getItem('funnelCompetitor3AverageRating')
+  )
+  $('.funnel-competitor3-review-count').text(
+    localStorage.getItem('funnelCompetitor3ReviewCount')
+  )
+  $('.funnel-3block-reviews1-review-text').text(
+    localStorage.getItem('funnel3blockReviews1ReviewText')
+  )
+  $('.funnel-3block-reviews2-review-text').text(
+    localStorage.getItem('funnel3blockReviews2ReviewText')
+  )
+  $('.funnel-3block-reviews3-review-text').text(
+    localStorage.getItem('funnel3blockReviews3ReviewText')
+  )
+  $('.featured-image-funnel').attr('src', localStorage.getItem('featuredImage'))
+  $('.funnel-before-review-text').text(
+    localStorage.getItem('funnelBeforeReviewText')
+  )
+  $('.categories-municipality').text(
+    `${localStorage.getItem('categoriesClean')} ${localStorage.getItem(
+      'municipalityClean'
+    )}`
+  )
+}
+
 const businessName =
   getUrlParam('business_name') || localStorage.getItem('businessName')
 const email = getUrlParam('email')
@@ -163,6 +244,9 @@ const fetchBusinessInfo = async fId => {
     reviewCount: 0,
     fullAddress: '',
     featuredImage: '',
+    businessNameClean: '',
+    municipalityClean: '',
+    categoriesClean: '',
     // funnelCompetitor1BusinessName: '',
     funnelCompetitor1AverageRating: 0,
     funnelCompetitor1ReviewCount: 0,
@@ -194,6 +278,9 @@ const fetchBusinessInfo = async fId => {
       accountInfo['averageRating'] = responseData.averageRating
       accountInfo['reviewCount'] = countFormatter(responseData.reviewCount)
       accountInfo['fullAddress'] = responseData.fullAddress
+      accountInfo['businessNameClean'] = responseData.businessNameClean
+      accountInfo['municipalityClean'] = responseData.municipalityClean
+      accountInfo['categoriesClean'] = responseData.categoriesClean
       // accountInfo['funnelCompetitor1BusinessName'] = responseData.funnelCompetitor1BusinessName
       accountInfo['funnelCompetitor1AverageRating'] =
         responseData.funnelCompetitor1AverageRating
@@ -261,19 +348,21 @@ const processUserData = async fId => {
     $('.total-review-count').text(localStorage.getItem('reviewCount'))
     $('.full-address').text(localStorage.getItem('fullAddress'))
     const rating = Math.round(localStorage.getItem('averageRating'))
-    $('.banner-rating-container .star:lt(' + rating + ')').addClass('filled')
-    $('.banner-rating-container .star:gt(' + (rating - 1) + ')').removeClass(
-      'filled'
-    )
+    processAverageRatingStars('.banner-rating-container', rating)
+    // $('.banner-rating-container .star:lt(' + rating + ')').addClass('filled')
+    // $('.banner-rating-container .star:gt(' + (rating - 1) + ')').removeClass(
+    //   'filled'
+    // )
     $('.home-preview-form').css('display', 'block')
     localStorage.setItem('fId', fId)
+    processAverageRatingStars('.banner-rating-container-before', rating)
 
-    $('.banner-rating-container-before .star:lt(' + rating + ')').addClass(
-      'filled'
-    )
-    $(
-      '.banner-rating-container-before .star:gt(' + (rating - 1) + ')'
-    ).removeClass('filled')
+    // $('.banner-rating-container-before .star:lt(' + rating + ')').addClass(
+    //   'filled'
+    // )
+    // $(
+    //   '.banner-rating-container-before .star:gt(' + (rating - 1) + ')'
+    // ).removeClass('filled')
 
     const averageRatingAfter = getNewRating(
       localStorage.getItem('averageRating')
@@ -283,16 +372,24 @@ const processUserData = async fId => {
     )
     $('.average-rating-after').text(averageRatingAfter)
     $('.total-review-count-after').text(totalReviewCountAfter)
-    $(
-      '.banner-rating-container-after .star:lt(' +
-        Math.round(averageRatingAfter) +
-        ')'
-    ).addClass('filled')
-    $(
-      '.banner-rating-container-after .star:gt(' +
-        (Math.round(averageRatingAfter) - 1) +
-        ')'
-    ).removeClass('filled')
+    processAverageRatingStars(
+      '.banner-rating-container-after',
+      averageRatingAfter
+    )
+    // $(
+    //   '.banner-rating-container-after .star:lt(' +
+    //     Math.round(averageRatingAfter) +
+    //     ')'
+    // ).addClass('filled')
+    // $(
+    //   '.banner-rating-container-after .star:gt(' +
+    //     (Math.round(averageRatingAfter) - 1) +
+    //     ')'
+    // ).removeClass('filled')
+
+    if (location.pathname.includes('/funnel')) {
+      processFunnelData()
+    }
   } else {
     fetchBusinessInfo(fId)
       .then(response => {
@@ -310,52 +407,101 @@ const processUserData = async fId => {
           localStorage.setItem('averageRating', response.averageRating)
           localStorage.setItem('reviewCount', response.reviewCount)
           localStorage.setItem('fullAddress', response.fullAddress)
+          localStorage.setItem('businessNameClean', response.businessNameClean)
+          localStorage.setItem('municipalityClean', response.municipalityClean)
+          localStorage.setItem('categoriesClean', response.categoriesClean)
           // localStorage.setItem('funnelCompetitor1BusinessName', response.funnelCompetitor1BusinessName)
-          localStorage.setItem('funnelCompetitor1AverageRating', response.funnelCompetitor1AverageRating)
-          localStorage.setItem('funnelCompetitor1ReviewCount', response.funnelCompetitor1ReviewCount)
-          localStorage.setItem('funnelCompetitor2BusinessName', response.funnelCompetitor2BusinessName)
-          localStorage.setItem('funnelCompetitor2AverageRating', response.funnelCompetitor2AverageRating)
-          localStorage.setItem('funnelCompetitor2ReviewCount', response.funnelCompetitor2ReviewCount)
-          localStorage.setItem('funnelCompetitor3BusinessName', response.funnelCompetitor3BusinessName)
-          localStorage.setItem('funnelCompetitor3AverageRating', response.funnelCompetitor3AverageRating)
-          localStorage.setItem('funnelCompetitor3ReviewCount', response.funnelCompetitor3ReviewCount)
-          localStorage.setItem('funnel3blockReviews1ReviewText', response.funnel3blockReviews1ReviewText)
-          localStorage.setItem('funnel3blockReviews2ReviewText', response.funnel3blockReviews2ReviewText)
-          localStorage.setItem('funnel3blockReviews3ReviewText', response.funnel3blockReviews3ReviewText)
-          localStorage.setItem('funnelBeforeReviewText', response.funnelBeforeReviewText)
+          localStorage.setItem(
+            'funnelCompetitor1AverageRating',
+            response.funnelCompetitor1AverageRating
+          )
+          localStorage.setItem(
+            'funnelCompetitor1ReviewCount',
+            response.funnelCompetitor1ReviewCount
+          )
+          localStorage.setItem(
+            'funnelCompetitor2BusinessName',
+            response.funnelCompetitor2BusinessName
+          )
+          localStorage.setItem(
+            'funnelCompetitor2AverageRating',
+            response.funnelCompetitor2AverageRating
+          )
+          localStorage.setItem(
+            'funnelCompetitor2ReviewCount',
+            response.funnelCompetitor2ReviewCount
+          )
+          localStorage.setItem(
+            'funnelCompetitor3BusinessName',
+            response.funnelCompetitor3BusinessName
+          )
+          localStorage.setItem(
+            'funnelCompetitor3AverageRating',
+            response.funnelCompetitor3AverageRating
+          )
+          localStorage.setItem(
+            'funnelCompetitor3ReviewCount',
+            response.funnelCompetitor3ReviewCount
+          )
+          localStorage.setItem(
+            'funnel3blockReviews1ReviewText',
+            response.funnel3blockReviews1ReviewText
+          )
+          localStorage.setItem(
+            'funnel3blockReviews2ReviewText',
+            response.funnel3blockReviews2ReviewText
+          )
+          localStorage.setItem(
+            'funnel3blockReviews3ReviewText',
+            response.funnel3blockReviews3ReviewText
+          )
+          localStorage.setItem(
+            'funnelBeforeReviewText',
+            response.funnelBeforeReviewText
+          )
           localStorage.setItem('featuredImage', response.featuredImage)
           localStorage.setItem('lastInfoFetch', new Date().getTime())
 
           const rating = Math.round(response.averageRating)
-          $('.banner-rating-container .star:lt(' + rating + ')').addClass(
-            'filled'
-          )
-          $(
-            '.banner-rating-container .star:gt(' + (rating - 1) + ')'
-          ).removeClass('filled')
+          processAverageRatingStars('.banner-rating-container', rating)
+          // $('.banner-rating-container .star:lt(' + rating + ')').addClass(
+          //   'filled'
+          // )
+          // $(
+          //   '.banner-rating-container .star:gt(' + (rating - 1) + ')'
+          // ).removeClass('filled')
           $('.home-preview-form').css('display', 'block')
 
-          $(
-            '.banner-rating-container-before .star:lt(' + rating + ')'
-          ).addClass('filled')
-          $(
-            '.banner-rating-container-before .star:gt(' + (rating - 1) + ')'
-          ).removeClass('filled')
+          processAverageRatingStars('.banner-rating-container-before', rating)
+          // $(
+          //   '.banner-rating-container-before .star:lt(' + rating + ')'
+          // ).addClass('filled')
+          // $(
+          //   '.banner-rating-container-before .star:gt(' + (rating - 1) + ')'
+          // ).removeClass('filled')
 
           const averageRatingAfter = getNewRating(response.averageRating)
           const totalReviewCountAfter = getNewReviewsCount(response.reviewCount)
           $('.average-rating-after').text(averageRatingAfter)
           $('.total-review-count-after').text(totalReviewCountAfter)
-          $(
-            '.banner-rating-container-after .star:lt(' +
-              Math.round(averageRatingAfter) +
-              ')'
-          ).addClass('filled')
-          $(
-            '.banner-rating-container-after .star:gt(' +
-              (Math.round(averageRatingAfter) - 1) +
-              ')'
-          ).removeClass('filled')
+          processAverageRatingStars(
+            '.banner-rating-container-after',
+            averageRatingAfter
+          )
+          // $(
+          //   '.banner-rating-container-after .star:lt(' +
+          //     Math.round(averageRatingAfter) +
+          //     ')'
+          // ).addClass('filled')
+          // $(
+          //   '.banner-rating-container-after .star:gt(' +
+          //     (Math.round(averageRatingAfter) - 1) +
+          //     ')'
+          // ).removeClass('filled')
+
+          if (location.pathname.includes('/funnel')) {
+            processFunnelData()
+          }
         } else {
           localStorage.removeItem('fId')
           $('.home-preview-form').hide()
@@ -1032,13 +1178,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         )
         $('.current-plan').text(currentSubscription.item_price_id_short)
 
-        const rating = Math.round(currentSubscription.business_rating)
-        $(
-          '.business-rating-container .svg-default:lt(' + rating + ')'
-        ).addClass('filled')
-        $(
-          '.business-rating-container .svg-default:gt(' + (rating - 1) + ')'
-        ).removeClass('filled')
+        processAverageRatingStars(
+          '.business-rating-container',
+          currentSubscription.business_rating
+        )
+        // const rating = Math.round(currentSubscription.business_rating)
+        // $(
+        //   '.business-rating-container .svg-default:lt(' + rating + ')'
+        // ).addClass('filled')
+        // $(
+        //   '.business-rating-container .svg-default:gt(' + (rating - 1) + ')'
+        // ).removeClass('filled')
 
         if (currentSubscription.business_picture) {
           const imageBase64 = await convertImageToBase64(
