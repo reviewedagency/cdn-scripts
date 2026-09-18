@@ -497,6 +497,9 @@ const processUserData = async fId => {
         } else {
           localStorage.removeItem('fId')
           $('.home-preview-form').hide()
+          if (location.pathname.includes('/funnel')) {
+            location.href = '/'
+          }
         }
       })
       .catch(error => {
