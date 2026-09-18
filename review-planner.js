@@ -43,8 +43,10 @@ const truncateBusinessName = (name, limit = 20) => {
 
 const processAverageRatingStars = (selector, rating) => {
   const roundedRating = Math.round(rating)
-  $(`${selector} .star:lt(${roundedRating})`).addClass('filled')
-  $(`${selector} .star:gt(${roundedRating - 1})`).removeClass('filled')
+  $(`${selector}`).each(function () {
+    $(this).find(`.star:lt(${roundedRating})`).addClass('filled')
+    $(this).find(`.star:gt(${roundedRating - 1})`).removeClass('filled')
+  })
 }
 
 const processFunnelData = () => {
