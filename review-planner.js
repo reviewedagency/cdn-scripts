@@ -472,7 +472,18 @@ const processUserData = async fId => {
             processFunnelData()
           }
 
-          if (location.pathname === '/' && response.templateUsed) {
+          if (
+            location.pathname === '/' &&
+            response.templateUsed &&
+            [
+              'lrc_hr',
+              'lrc_lr',
+              'hrc_hr',
+              'hrc_lr',
+              'no_reviews',
+              'proposal'
+            ].includes(response.templateUsed.toLowerCase())
+          ) {
             location.href = `/funnel/${response.templateUsed
               .toLowerCase()
               .replace(/_/g, '-')}${location.search}`
