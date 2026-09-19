@@ -126,6 +126,9 @@ const email = getUrlParam('email')
 const fId = getUrlParam('f_id')
 const sender = getUrlParam('sender')
 const fIdExist = fId && fId !== 'undefined'
+const funnelDataSyncEnabled =
+  location.pathname.includes('/funnel/') &&
+  !location.pathname.includes('/proposal')
 
 // TASK 6: The banner should be hidden if no URL params / local storage
 if (!businessName) {
@@ -373,7 +376,7 @@ const processUserData = async fId => {
       averageRatingAfter
     )
 
-    if (location.pathname.includes('/funnel')) {
+    if (funnelDataSyncEnabled) {
       processFunnelData()
     }
   } else {
@@ -465,7 +468,7 @@ const processUserData = async fId => {
             averageRatingAfter
           )
 
-          if (location.pathname.includes('/funnel')) {
+          if (funnelDataSyncEnabled) {
             processFunnelData()
           }
 
@@ -477,7 +480,7 @@ const processUserData = async fId => {
         } else {
           localStorage.removeItem('fId')
           $('.home-preview-form').hide()
-          if (location.pathname.includes('/funnel')) {
+          if (funnelDataSyncEnabled) {
             location.href = `/funnel/proposal/${location.search}`
           }
         }
