@@ -45,12 +45,22 @@ const processAverageRatingStars = (selector, rating) => {
   const roundedRating = Math.round(rating)
   $(`${selector}`).each(function () {
     $(this).find(`.star:lt(${roundedRating})`).addClass('filled')
-    $(this).find(`.star:gt(${roundedRating - 1})`).removeClass('filled')
+    $(this)
+      .find(`.star:gt(${roundedRating - 1})`)
+      .removeClass('filled')
   })
 }
 
 const processFunnelData = () => {
-  $('.business-name-clean').text(localStorage.getItem('businessNameClean'))
+  const funnel = getUrlParam('funnel')
+  if (!localStorage.getItem('rpFunnel') && funnel) {
+    localStorage.setItem('rpFunnel', funnel)
+  }
+
+  $('.business-name-clean').text(
+    localStorage.getItem('businessNameClean') ||
+      decodeURIComponent(localStorage.getItem('businessName'))
+  )
   $('.business-name-truncate').text(
     truncateBusinessName(localStorage.getItem('businessName'))
   )
@@ -237,6 +247,7 @@ const fetchBusinessInfo = async fId => {
     averageRating: 0,
     reviewCount: 0,
     fullAddress: '',
+    templateUsed: '',
     featuredImage: '',
     businessNameClean: '',
     municipalityClean: '',
@@ -272,6 +283,7 @@ const fetchBusinessInfo = async fId => {
       accountInfo['averageRating'] = responseData.averageRating
       accountInfo['reviewCount'] = countFormatter(responseData.reviewCount)
       accountInfo['fullAddress'] = responseData.fullAddress
+      accountInfo['templateUsed'] = responseData.templateUsed
       accountInfo['businessNameClean'] = responseData.businessNameClean
       accountInfo['municipalityClean'] = responseData.municipalityClean
       accountInfo['categoriesClean'] = responseData.categoriesClean
@@ -381,6 +393,7 @@ const processUserData = async fId => {
           localStorage.setItem('averageRating', response.averageRating)
           localStorage.setItem('reviewCount', response.reviewCount)
           localStorage.setItem('fullAddress', response.fullAddress)
+          localStorage.setItem('rpFunnel', response.templateUsed)
           localStorage.setItem('businessNameClean', response.businessNameClean)
           localStorage.setItem('municipalityClean', response.municipalityClean)
           localStorage.setItem('categoriesClean', response.categoriesClean)
@@ -455,11 +468,17 @@ const processUserData = async fId => {
           if (location.pathname.includes('/funnel')) {
             processFunnelData()
           }
+
+          if (location.pathname === '/' && response.templateUsed) {
+            location.href = `/funnel/${response.templateUsed.toLowerCase()}${
+              location.search
+            }`
+          }
         } else {
           localStorage.removeItem('fId')
           $('.home-preview-form').hide()
           if (location.pathname.includes('/funnel')) {
-            location.href = '/'
+            location.href = `/funnel/proposal/${location.search}`
           }
         }
       })
