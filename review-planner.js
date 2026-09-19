@@ -516,7 +516,9 @@ if (businessName) {
         if (result.data) {
           processUserData(fId)
         } else {
-          location.href = `/funnel/proposal/${location.search}`
+          if (funnelDataSyncEnabled) {
+            location.href = `/funnel/proposal/${location.search}`
+          }
         }
       })
       .catch(error => console.log('error verifying info', error))
