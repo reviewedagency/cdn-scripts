@@ -473,9 +473,9 @@ const processUserData = async fId => {
           }
 
           if (location.pathname === '/' && response.templateUsed) {
-            location.href = `/funnel/${response.templateUsed.toLowerCase()}${
-              location.search
-            }`
+            location.href = `/funnel/${response.templateUsed
+              .toLowerCase()
+              .replaceAll('_', '-')}${location.search}`
           }
         } else {
           localStorage.removeItem('fId')
