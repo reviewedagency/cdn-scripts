@@ -675,7 +675,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         $('#Business-Name').trigger('input')
         $('#Business-Address').trigger('input')
         $('.add-google-profile-button').removeClass('disabled')
-        $('.add-google-profile-button').click()
+        $('.add-google-profile-button').trigger('click')
         $('#add-google-profile-form').trigger('submit')
         $('#add-account-step-2').hide()
       }
