@@ -360,7 +360,6 @@ const fetchBusinessInfo = async fId => {
 
 // TASK 5: Banner should only show when lead exists
 const processUserData = async fId => {
-  const funnel = localStorage.getItem('rpFunnel') || getUrlParam('funnel')
   const timeDifference =
     new Date().getTime() - localStorage.getItem('lastInfoFetch')
 
@@ -400,11 +399,12 @@ const processUserData = async fId => {
       averageRatingAfter
     )
 
-    if (funnel && isValidFunnel(funnel)) {
-      location.href = `/funnels/${funnel.toLowerCase().replace(/_/g, '-')}${
-        location.search
-      }`
-    }
+    // const funnel = localStorage.getItem('rpFunnel') || getUrlParam('funnel')
+    // if (funnel && isValidFunnel(funnel)) {
+    //   location.href = `/funnels/${funnel.toLowerCase().replace(/_/g, '-')}${
+    //     location.search
+    //   }`
+    // }
 
     if (funnelDataSyncEnabled) {
       processFunnelData()
