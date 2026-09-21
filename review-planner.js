@@ -53,7 +53,6 @@ const processAverageRatingStars = (selector, rating) => {
 
 const processFunnelData = () => {
   const funnel = getUrlParam('funnel')
-  console.log('🚀 ~ processFunnelData ~ funnel:', funnel)
   if (!localStorage.getItem('rpFunnel') && funnel) {
     localStorage.setItem('rpFunnel', funnel)
   }
@@ -511,7 +510,7 @@ const processUserData = async fId => {
           localStorage.removeItem('fId')
           $('.home-preview-form').hide()
           if (funnelDataSyncEnabled) {
-            location.href = `/funnel/proposal/${location.search}`
+            // location.href = `/funnel/proposal/${location.search}`
           }
         }
       })
@@ -543,11 +542,12 @@ if (businessName) {
     )
       .then(response => response.json())
       .then(result => {
+        console.log('🚀 ~ result:', result)
         if (result.data) {
           processUserData(fId)
         } else {
           if (funnelDataSyncEnabled) {
-            location.href = `/funnel/proposal/${location.search}`
+            // location.href = `/funnel/proposal/${location.search}`
           }
         }
       })
