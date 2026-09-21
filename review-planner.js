@@ -400,7 +400,6 @@ const processUserData = async fId => {
   } else {
     fetchBusinessInfo(fId)
       .then(response => {
-        console.log('🚀 ~ processUserData ~ response:', response)
         if (response.record_exist) {
           $('.business-name').text(response.businessName)
           $('.average-rating').text(
@@ -511,7 +510,7 @@ const processUserData = async fId => {
           localStorage.removeItem('fId')
           $('.home-preview-form').hide()
           if (funnelDataSyncEnabled) {
-            // location.href = `/funnel/proposal/${location.search}`
+            location.href = `/funnel/proposal/${location.search}`
           }
         }
       })
@@ -543,12 +542,11 @@ if (businessName) {
     )
       .then(response => response.json())
       .then(result => {
-        console.log('🚀 ~ result:', result)
         if (result.data) {
           processUserData(fId)
         } else {
           if (funnelDataSyncEnabled) {
-            // location.href = `/funnel/proposal/${location.search}`
+            location.href = `/funnel/proposal/${location.search}`
           }
         }
       })
