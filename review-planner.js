@@ -53,6 +53,7 @@ const processAverageRatingStars = (selector, rating) => {
 
 const processFunnelData = () => {
   const funnel = getUrlParam('funnel')
+  console.log('🚀 ~ processFunnelData ~ funnel:', funnel)
   if (!localStorage.getItem('rpFunnel') && funnel) {
     localStorage.setItem('rpFunnel', funnel)
   }
