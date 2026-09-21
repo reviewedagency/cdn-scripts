@@ -248,7 +248,9 @@ const convertImageToBase64 = async imageUrl => {
     )
     const responseJson = await response.json()
     return responseJson.data || defaultProfilePictureUrl
-  } catch (error) {}
+  } catch (error) {
+    return defaultProfilePictureUrl
+  }
 }
 
 const fetchBusinessInfo = async fId => {
