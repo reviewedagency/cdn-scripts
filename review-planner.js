@@ -13,6 +13,22 @@ const getUrlParam = name => {
 
 const delayExecution = ms => new Promise(resolve => setTimeout(resolve, ms))
 
+const safeFetch = async (url, options = {}, { silent = false } = {}) => {
+  try {
+    const response = await fetch(url, options)
+    if (!response.ok) {
+      throw new Error(response.statusText || 'Unauthorized')
+    }
+
+    return await response.json()
+  } catch (error) {
+    if (!silent) {
+      console.warn('Request failed:', url, error)
+    }
+    return null
+  }
+}
+
 const getNewRating = rating => {
   const numericRating = Number(rating)
   if (numericRating < 4.9) {
@@ -191,9 +207,10 @@ $('a.start-trial-button, div.start-trial-button').on('click', async e => {
       })
     }
 
-    await fetch(
+    await safeFetch(
       'https://thereviewplanner-api-npfcm.ondigitalocean.app/supabase/website-button-trial-click',
-      options
+      options,
+      { silent: true }
     )
     location.href = $(e.target).closest('a').attr('href')
   }
@@ -214,9 +231,10 @@ if (fIdExist && email && location.pathname === '/') {
     })
   }
 
-  fetch(
+  safeFetch(
     'https://thereviewplanner-api-npfcm.ondigitalocean.app/supabase/website-view-event',
-    options
+    options,
+    { silent: true }
   )
 }
 
@@ -281,14 +299,14 @@ const fetchBusinessInfo = async fId => {
   }
 
   try {
-    const response = await fetch(
+    const jsonResponse = await safeFetch(
       `https://thereviewplanner-api-npfcm.ondigitalocean.app/supabase/google-data/${fId}`,
       {
         method: 'GET'
-      }
+      },
+      { silent: true }
     )
-    const jsonResponse = await response.json()
-    const responseData = jsonResponse.data
+    const responseData = jsonResponse?.data
     if (responseData) {
       const imageBase64 = await convertImageToBase64(responseData.featuredImage)
       accountInfo['record_exist'] = true
@@ -526,15 +544,15 @@ if (businessName) {
       }
     })
 
-    fetch(
+    safeFetch(
       `https://thereviewplanner-api-npfcm.ondigitalocean.app/supabase/google-data/verify-existence?fId=${fId}&email=${email}`,
       {
         method: 'GET'
-      }
+      },
+      { silent: true }
     )
-      .then(response => response.json())
       .then(result => {
-        if (result.data) {
+        if (result?.data) {
           processUserData(fId)
         } else {
           if (funnelDataSyncEnabled) {
@@ -590,7 +608,7 @@ const searchGoogleInfo = async ({ businessName, businessAddress }) => {
     const myHeaders = new Headers()
     myHeaders.append('Content-Type', 'application/json')
 
-    const response = await fetch(
+    const jsonResponse = await safeFetch(
       'https://thereviewplanner-api-npfcm.ondigitalocean.app/rapid-api/google/search-profile',
       {
         method: 'POST',
@@ -599,10 +617,10 @@ const searchGoogleInfo = async ({ businessName, businessAddress }) => {
           businessName,
           businessAddress
         })
-      }
+      },
+      { silent: true }
     )
-    const jsonResponse = await response.json()
-    const responseData = jsonResponse.data
+    const responseData = jsonResponse?.data
     if (responseData) {
       const mutatedRecords = await Promise.all(
         responseData.map(async item => {
@@ -905,7 +923,7 @@ document.addEventListener('DOMContentLoaded', async function () {
               }
             })
 
-            await fetch(
+            await safeFetch(
               'https://n8n.thereviewdirectory.com/webhook/b3305d99-c3c0-4d0a-a952-8e21859acbff',
               {
                 method: 'POST',
@@ -928,7 +946,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                   business_country: selectedProfileData.country,
                   business_category: selectedProfileData.category
                 })
-              }
+              },
+              { silent: true }
             )
           }
         }
@@ -961,7 +980,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           ['basic', 'pro'].includes(planName) &&
           ['monthly', 'quarterly', 'yearly'].includes(planInterval)
         ) {
-          const response = await fetch(
+          const responseJson = await safeFetch(
             'https://thereviewplanner-api-npfcm.ondigitalocean.app/chargebee/checkout-new-subscription',
             {
               method: 'POST',
@@ -973,10 +992,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 planName,
                 planInterval
               })
-            }
+            },
+            { silent: true }
           )
 
-          const responseJson = await response.json()
           const checkoutUrl = responseJson?.data?.checkout_url
           if (checkoutUrl) {
             window.location.href = checkoutUrl
@@ -1038,7 +1057,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           }
         })
 
-        await fetch(
+        await safeFetch(
           'https://n8n.thereviewdirectory.com/webhook/798c23e1-c093-4809-9524-4ab42c218fb0',
           {
             method: 'POST',
@@ -1056,7 +1075,8 @@ document.addEventListener('DOMContentLoaded', async function () {
               language: selectedLanguages,
               location: selectedLocations
             })
-          }
+          },
+          { silent: true }
         )
       }
 
@@ -1077,7 +1097,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         .find('.button_text')
         .text('Processing...')
       if (customerId && subscriptionId) {
-        const response = await fetch(
+        const responseJson = await safeFetch(
           'https://thereviewplanner-api-npfcm.ondigitalocean.app/chargebee/checkout-subscription-upgrade',
           {
             method: 'POST',
@@ -1088,10 +1108,10 @@ document.addEventListener('DOMContentLoaded', async function () {
               customerId,
               subscriptionId
             })
-          }
+          },
+          { silent: true }
         )
 
-        const responseJson = await response.json()
         const checkoutUrl = responseJson?.data?.checkout_url
         if (checkoutUrl) {
           window.location.href = checkoutUrl
@@ -1481,7 +1501,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       const { data: member } = await window.$memberstackDom.getCurrentMember()
       const customFields = member?.customFields
 
-      const fpTokenResponse = await fetch(
+      const fpTokenResponseJson = await safeFetch(
         'https://thereviewplanner-api-npfcm.ondigitalocean.app/first-promoter/promoter-iframe-token',
         {
           method: 'POST',
@@ -1491,9 +1511,9 @@ document.addEventListener('DOMContentLoaded', async function () {
           body: JSON.stringify({
             promoterId: customFields?.['first-promoter-id']
           })
-        }
+        },
+        { silent: true }
       )
-      const fpTokenResponseJson = await fpTokenResponse.json()
       const accessToken = fpTokenResponseJson?.data?.accessToken
       renderFirstPromoterDashboardIframe(accessToken)
     } catch (error) {
