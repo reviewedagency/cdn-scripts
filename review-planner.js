@@ -290,12 +290,15 @@ const fetchBusinessInfo = async fId => {
     const jsonResponse = await response.json()
     const responseData = jsonResponse.data
     if (responseData) {
-      const imageBase64 = await convertImageToBase64(responseData.featuredImage)
-      console.log(
-        '🚀 ~ fetchBusinessInfo ~ imageBase64:',
-        imageBase64,
-        responseData.featuredImage
-      )
+      let imageBase64 = defaultProfilePictureUrl
+
+      if (
+        responseData.featuredImage &&
+        responseData.featuredImage !== defaultProfilePictureUrl
+      ) {
+        imageBase64 = await convertImageToBase64(responseData.featuredImage)
+      }
+
       accountInfo['record_exist'] = true
       accountInfo['businessName'] = responseData.businessName
       accountInfo['averageRating'] = responseData.averageRating
@@ -335,7 +338,6 @@ const fetchBusinessInfo = async fId => {
         responseData.funnelBeforeReviewText
       accountInfo['featuredImage'] = imageBase64
     }
-    console.log('🚀 ~ fetchBusinessInfo ~ accountInfo:', accountInfo)
 
     return accountInfo
   } catch (fetchBusinessInfoError) {
