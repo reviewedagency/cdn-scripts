@@ -51,6 +51,11 @@ const processAverageRatingStars = (selector, rating) => {
   })
 }
 
+const isValidFunnel = funnel =>
+  ['lrc_hr', 'lrc_lr', 'hrc_hr', 'hrc_lr', 'no_reviews', 'proposal'].includes(
+    funnel.toLowerCase()
+  )
+
 const processFunnelData = () => {
   const funnel = getUrlParam('funnel')
   if (!localStorage.getItem('rpFunnel') && funnel) {
@@ -355,6 +360,7 @@ const fetchBusinessInfo = async fId => {
 
 // TASK 5: Banner should only show when lead exists
 const processUserData = async fId => {
+  const funnel = localStorage.getItem('rpFunnel') || getUrlParam('funnel')
   const timeDifference =
     new Date().getTime() - localStorage.getItem('lastInfoFetch')
 
@@ -393,6 +399,12 @@ const processUserData = async fId => {
       '.banner-rating-container-after',
       averageRatingAfter
     )
+
+    if (funnel && isValidFunnel(funnel)) {
+      location.href = `/funnels/${funnel.toLowerCase().replace(/_/g, '-')}${
+        location.search
+      }`
+    }
 
     if (funnelDataSyncEnabled) {
       processFunnelData()
@@ -493,14 +505,7 @@ const processUserData = async fId => {
           if (
             location.pathname === '/' &&
             response.templateUsed &&
-            [
-              'lrc_hr',
-              'lrc_lr',
-              'hrc_hr',
-              'hrc_lr',
-              'no_reviews',
-              'proposal'
-            ].includes(response.templateUsed.toLowerCase())
+            isValidFunnel(response.templateUsed)
           ) {
             location.href = `/funnel/${response.templateUsed
               .toLowerCase()
