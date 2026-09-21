@@ -75,6 +75,10 @@ const processFunnelData = () => {
   $('.funnel-competitor1-average-rating').text(
     localStorage.getItem('funnelCompetitor1AverageRating')
   )
+  $('.funnel-competitor1-average-rating').attr({
+    'data-from': 0,
+    'data-to': localStorage.getItem('funnelCompetitor1AverageRating')
+  })
   processAverageRatingStars(
     '.funnel-competitor1-average-rating-stars',
     localStorage.getItem('funnelCompetitor1AverageRating')
@@ -82,6 +86,10 @@ const processFunnelData = () => {
   $('.funnel-competitor1-review-count').text(
     localStorage.getItem('funnelCompetitor1ReviewCount')
   )
+  $('.funnel-competitor1-review-count').attr({
+    'data-from': 0,
+    'data-to': localStorage.getItem('funnelCompetitor1ReviewCount')
+  })
   $('.funnel-competitor2-business-name').text(
     truncateBusinessName(localStorage.getItem('funnelCompetitor2BusinessName'))
   )
