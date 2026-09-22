@@ -66,6 +66,7 @@ const processFunnelData = () => {
     localStorage.getItem('businessNameClean') ||
       decodeURIComponent(localStorage.getItem('businessName'))
   )
+  $('.business-name-full').text(localStorage.getItem('businessName'))
   $('.business-name-truncate').text(
     truncateBusinessName(localStorage.getItem('businessName'))
   )
@@ -96,7 +97,7 @@ const processFunnelData = () => {
     'data-to': localStorage.getItem('funnelCompetitor1ReviewCount')
   })
   $('.funnel-competitor2-business-name').text(
-    truncateBusinessName(localStorage.getItem('funnelCompetitor2BusinessName'))
+    localStorage.getItem('funnelCompetitor2BusinessName')
   )
   $('.funnel-competitor2-average-rating').text(
     localStorage.getItem('funnelCompetitor2AverageRating')
@@ -105,7 +106,7 @@ const processFunnelData = () => {
     localStorage.getItem('funnelCompetitor2ReviewCount')
   )
   $('.funnel-competitor3-business-name').text(
-    truncateBusinessName(localStorage.getItem('funnelCompetitor3BusinessName'))
+    localStorage.getItem('funnelCompetitor3BusinessName')
   )
   $('.funnel-competitor3-average-rating').text(
     localStorage.getItem('funnelCompetitor3AverageRating')
