@@ -503,15 +503,15 @@ const processUserData = async fId => {
             processFunnelData()
           }
 
-          if (
-            location.pathname === '/' &&
-            response.templateUsed &&
-            isValidFunnel(response.templateUsed)
-          ) {
-            location.href = `/funnel/${response.templateUsed
-              .toLowerCase()
-              .replace(/_/g, '-')}${location.search}`
-          }
+          // if (
+          //   location.pathname === '/' &&
+          //   response.templateUsed &&
+          //   isValidFunnel(response.templateUsed)
+          // ) {
+          //   location.href = `/funnel/${response.templateUsed
+          //     .toLowerCase()
+          //     .replace(/_/g, '-')}${location.search}`
+          // }
         } else {
           localStorage.removeItem('fId')
           $('.home-preview-form').hide()
