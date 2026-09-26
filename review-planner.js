@@ -62,10 +62,11 @@ const processFunnelData = () => {
     localStorage.setItem('rpFunnel', funnel)
   }
 
-  $('.business-name-clean').text(
+  const cleanedBusinessName =
     localStorage.getItem('businessNameClean') ||
-      decodeURIComponent(localStorage.getItem('businessName'))
-  )
+    decodeURIComponent(localStorage.getItem('businessName'))
+
+  $('.business-name-clean').text(cleanedBusinessName)
   $('.business-name-full').text(localStorage.getItem('businessName'))
   $('.business-name-truncate').text(
     truncateBusinessName(localStorage.getItem('businessName'))
@@ -132,6 +133,38 @@ const processFunnelData = () => {
       'municipalityClean'
     )}`
   )
+
+  const mapBoxContainer = document.querySelector('.vsl-lr-mapbox')
+  const latitude = localStorage.getItem('latitude')
+  const longitude = localStorage.getItem('longitude')
+  const timezone = localStorage.getItem('timezone')
+
+  if (!mapBoxContainer || !(latitude && longitude) || !timezone) {
+    $('.funnel-map-section').hide()
+  } else {
+    $('.funnel-map-section').show()
+    const mapState = mapBoxContainer?._mapState
+    if (mapState) {
+      if (latitude && longitude) {
+        const point = [Number(latitude), Number(longitude)]
+        mapState.marker.setLatLng(point)
+        mapState.cover.setLatLng(point)
+        mapState.ripples.forEach(ripple => {
+          ripple.setLatLng(point)
+        })
+
+        $(mapState.marker.getElement())
+          .find('.business-name-clean')
+          .text(cleanedBusinessName)
+          
+        $(mapState.marker.getElement())
+          .find('.featured-image-funnel')
+          .attr('src', localStorage.getItem('featuredImage'))
+
+        mapState.map.panTo(point, { animate: false })
+      }
+    }
+  }
 }
 
 const businessName =
@@ -283,7 +316,10 @@ const fetchBusinessInfo = async fId => {
     funnel3blockReviews1ReviewText: '',
     funnel3blockReviews2ReviewText: '',
     funnel3blockReviews3ReviewText: '',
-    funnelBeforeReviewText: ''
+    funnelBeforeReviewText: '',
+    latitude: '',
+    longitude: '',
+    timezone: ''
   }
 
   try {
@@ -342,6 +378,9 @@ const fetchBusinessInfo = async fId => {
         responseData.funnel3blockReviews3ReviewText
       accountInfo['funnelBeforeReviewText'] =
         responseData.funnelBeforeReviewText
+      accountInfo['latitude'] = responseData.latitude
+      accountInfo['longitude'] = responseData.longitude
+      accountInfo['timezone'] = responseData.timezone
       accountInfo['featuredImage'] = imageBase64
     }
 
@@ -480,6 +519,9 @@ const processUserData = async fId => {
             'funnelBeforeReviewText',
             response.funnelBeforeReviewText
           )
+          localStorage.setItem('latitude', response.latitude)
+          localStorage.setItem('longitude', response.longitude)
+          localStorage.setItem('timezone', response.timezone)
           localStorage.setItem('featuredImage', response.featuredImage)
           localStorage.setItem('lastInfoFetch', new Date().getTime())
 
