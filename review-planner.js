@@ -56,17 +56,42 @@ const isValidFunnel = funnel =>
     funnel.toLowerCase()
   )
 
+const updateFunnelMap = (mapState, latitude, longitude, timezone) => {
+  if (mapState && latitude && longitude) {
+    const point = [Number(latitude), Number(longitude)]
+    mapState.marker.setLatLng(point)
+    mapState.cover.setLatLng(point)
+    mapState.ripples.forEach(ripple => {
+      ripple.setLatLng(point)
+    })
+
+    $(mapState.marker.getElement())
+      .find('.business-name-clean')
+      .text(
+        localStorage.getItem('businessNameClean') ||
+          decodeURIComponent(localStorage.getItem('businessName'))
+      )
+
+    $(mapState.marker.getElement())
+      .find('.featured-image-funnel')
+      .attr('src', localStorage.getItem('featuredImage'))
+
+    mapState.map.panTo(point, { animate: false })
+  }
+
+  console.log('Map has been processed')
+}
+
 const processFunnelData = () => {
   const funnel = getUrlParam('funnel')
   if (!localStorage.getItem('rpFunnel') && funnel) {
     localStorage.setItem('rpFunnel', funnel)
   }
 
-  const cleanedBusinessName =
+  $('.business-name-clean').text(
     localStorage.getItem('businessNameClean') ||
-    decodeURIComponent(localStorage.getItem('businessName'))
-
-  $('.business-name-clean').text(cleanedBusinessName)
+      decodeURIComponent(localStorage.getItem('businessName'))
+  )
   $('.business-name-full').text(localStorage.getItem('businessName'))
   $('.business-name-truncate').text(
     truncateBusinessName(localStorage.getItem('businessName'))
@@ -139,30 +164,21 @@ const processFunnelData = () => {
   const longitude = localStorage.getItem('longitude')
   const timezone = localStorage.getItem('timezone')
 
-  if (!mapBoxContainer || !(latitude && longitude) || !timezone) {
+  if (!(latitude && longitude) || !timezone) {
     $('.funnel-map-section').hide()
   } else {
     $('.funnel-map-section').show()
     const mapState = mapBoxContainer?._mapState
     if (mapState) {
-      if (latitude && longitude) {
-        const point = [Number(latitude), Number(longitude)]
-        mapState.marker.setLatLng(point)
-        mapState.cover.setLatLng(point)
-        mapState.ripples.forEach(ripple => {
-          ripple.setLatLng(point)
-        })
-
-        $(mapState.marker.getElement())
-          .find('.business-name-clean')
-          .text(cleanedBusinessName)
-          
-        $(mapState.marker.getElement())
-          .find('.featured-image-funnel')
-          .attr('src', localStorage.getItem('featuredImage'))
-
-        mapState.map.panTo(point, { animate: false })
-      }
+      updateFunnelMap(mapState, latitude, longitude, timezone)
+    } else {
+      window.addEventListener(
+        'funnelMapReady',
+        function (_event) {
+          updateFunnelMap(mapState, latitude, longitude, timezone)
+        },
+        { once: true }
+      )
     }
   }
 }
