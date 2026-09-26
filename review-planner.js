@@ -57,7 +57,6 @@ const isValidFunnel = funnel =>
   )
 
 const updateFunnelMap = (mapState, latitude, longitude, timezone) => {
-  console.log('🚀 ~ updateFunnelMap ~ mapState:', mapState)
   if (mapState && latitude && longitude) {
     const point = [Number(latitude), Number(longitude)]
     mapState.marker.setLatLng(point)
@@ -174,8 +173,9 @@ const processFunnelData = () => {
     } else {
       window.addEventListener(
         'funnelMapReady',
-        function (_event) {
-          updateFunnelMap(mapState, latitude, longitude, timezone)
+        function (event) {
+          console.log('🚀 ~ processFunnelData ~ event:', event.detail)
+          updateFunnelMap(event.detail.mapState, latitude, longitude, timezone)
           console.log('Map has been processed through listener')
         },
         { once: true }
