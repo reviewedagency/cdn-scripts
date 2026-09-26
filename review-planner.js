@@ -175,6 +175,7 @@ const processFunnelData = () => {
         'funnelMapReady',
         function (_event) {
           updateFunnelMap(mapState, latitude, longitude, timezone)
+          console.log('Map has been processed through listener')
         },
         { once: true }
       )
