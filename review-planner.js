@@ -77,7 +77,6 @@ const updateFunnelMap = (mapState, latitude, longitude, timezone) => {
       .attr('src', localStorage.getItem('featuredImage'))
 
     mapState.map.panTo(point, { animate: false })
-    console.log('Map has just been processed')
   }
 }
 
@@ -175,7 +174,6 @@ const processFunnelData = () => {
         'funnelMapReady',
         function (event) {
           updateFunnelMap(event.detail, latitude, longitude, timezone)
-          console.log('Map has been processed through listener')
         },
         { once: true }
       )
