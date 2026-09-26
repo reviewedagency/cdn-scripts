@@ -102,6 +102,9 @@ const processFunnelData = () => {
   $('.review-count-funnel').text(localStorage.getItem('reviewCount'))
   $('.municipality-funnel').text(localStorage.getItem('municipalityClean'))
   $('.categories-funnel').text(localStorage.getItem('categoriesClean'))
+  $('.categories-funnel-lowercase').text(
+    localStorage.getItem('categoriesClean')?.toLowerCase() || ''
+  )
   $('.funnel-competitor1-average-rating').text(
     localStorage.getItem('funnelCompetitor1AverageRating')
   )
