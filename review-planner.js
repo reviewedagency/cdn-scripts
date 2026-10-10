@@ -215,24 +215,22 @@ Webflow.push(function () {
 // TASK 1 & TASK 7: Append URL params to each page click
 const currentParams = new URLSearchParams(window.location.search)
 if (currentParams.toString()) {
-  document
-    .querySelectorAll('a[href]:not(.pricing-tab-link,.pricing-section-link)')
-    .forEach(link => {
-      if (link.href === '#') {
-        return
+  document.querySelectorAll('a[href]:not(.pricing-tab-link)').forEach(link => {
+    if (link.href === '#' || link.href === '#pricing') {
+      return
+    }
+    try {
+      const url = new URL(link.href, window.location.origin)
+
+      if (url.origin === window.location.origin) {
+        currentParams.forEach((value, key) => {
+          url.searchParams.set(key, value)
+        })
+
+        link.href = url.toString()
       }
-      try {
-        const url = new URL(link.href, window.location.origin)
-
-        if (url.origin === window.location.origin) {
-          currentParams.forEach((value, key) => {
-            url.searchParams.set(key, value)
-          })
-
-          link.href = url.toString()
-        }
-      } catch (error) {}
-    })
+    } catch (error) {}
+  })
 }
 
 // TASK 2: Button Click should fire to Webhook
@@ -593,18 +591,20 @@ const processUserData = async fId => {
 
 if (businessName) {
   if (email) {
-    $('a')
-      .not('.pricing-section-link')
-      .each(function () {
-        if ($(this).attr('href') && $(this).attr('href') !== '#') {
-          $(this).attr(
-            'href',
-            `${
-              $(this).attr('href').split('?')[0]
-            }?f_id=${fId}&business_name=${businessName}&email=${email}&sender=${sender}`
-          )
-        }
-      })
+    $('a').each(function () {
+      if (
+        $(this).attr('href') &&
+        $(this).attr('href') !== '#' &&
+        $(this).attr('href') !== '#pricing'
+      ) {
+        $(this).attr(
+          'href',
+          `${
+            $(this).attr('href').split('?')[0]
+          }?f_id=${fId}&business_name=${businessName}&email=${email}&sender=${sender}`
+        )
+      }
+    })
 
     fetch(
       `https://thereviewplanner-api-npfcm.ondigitalocean.app/supabase/google-data/verify-existence?fId=${fId}&email=${email}`,
@@ -724,7 +724,7 @@ const searchGoogleInfo = async ({ businessName, businessAddress }) => {
 // TASK 1:
 let currentPlan = getUrlParam('plan') || 'monthly-pro'
 $('a[href].start-trial-button')
-  .not('.contact-sales,.immediate-purchase,.pricing-section-link')
+  .not('.contact-sales,.immediate-purchase')
   .on('click', function (e) {
     e.preventDefault()
     const currentUrl = $(this).closest('a').attr('href')
