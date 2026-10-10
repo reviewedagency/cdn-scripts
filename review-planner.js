@@ -216,7 +216,10 @@ Webflow.push(function () {
 const currentParams = new URLSearchParams(window.location.search)
 if (currentParams.toString()) {
   document.querySelectorAll('a[href]:not(.pricing-tab-link)').forEach(link => {
-    if (link.href === '#' || link.href === '#pricing') {
+    if (
+      link.href === '#' ||
+      (location.href.includes('funnel/') && link.href.includes('#pricing'))
+    ) {
       return
     }
     try {
@@ -595,7 +598,11 @@ if (businessName) {
       if (
         $(this).attr('href') &&
         $(this).attr('href') !== '#' &&
-        $(this).attr('href') !== '#pricing'
+        $(this).attr('href') !== '#pricing' &&
+        !(
+          location.href.includes('funnel/') &&
+          $(this).attr('href').includes('#pricing')
+        )
       ) {
         $(this).attr(
           'href',
