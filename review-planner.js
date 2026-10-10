@@ -216,7 +216,7 @@ Webflow.push(function () {
 const currentParams = new URLSearchParams(window.location.search)
 if (currentParams.toString()) {
   document.querySelectorAll('a[href]:not(.pricing-tab-link)').forEach(link => {
-    if (link.href === '#') {
+    if (link.href === '#' || link.href === '#pricing') {
       return
     }
     try {
@@ -592,7 +592,11 @@ const processUserData = async fId => {
 if (businessName) {
   if (email) {
     $('a').each(function () {
-      if ($(this).attr('href') && $(this).attr('href') !== '#') {
+      if (
+        $(this).attr('href') &&
+        $(this).attr('href') !== '#' &&
+        $(this).attr('href') !== '#pricing'
+      ) {
         $(this).attr(
           'href',
           `${
