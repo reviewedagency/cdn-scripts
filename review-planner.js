@@ -100,6 +100,9 @@ const processFunnelData = () => {
     localStorage.getItem('averageRating')
   )
   $('.review-count-funnel').text(localStorage.getItem('reviewCount'))
+  $('.funnel-review-wording').text(
+    localStorage.getItem('reviewCount') == '1' ? 'review' : 'reviews'
+  )
   $('.municipality-funnel').text(localStorage.getItem('municipalityClean'))
   $('.categories-funnel').text(localStorage.getItem('categoriesClean'))
   $('.categories-funnel-lowercase').text(
