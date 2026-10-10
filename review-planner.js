@@ -216,6 +216,7 @@ Webflow.push(function () {
 const currentParams = new URLSearchParams(window.location.search)
 if (currentParams.toString()) {
   document.querySelectorAll('a[href]:not(.pricing-tab-link)').forEach(link => {
+      console.log('🚀 ~ ink.href:', link.href)
     if (
       link.href === '#' ||
       (location.href.includes('funnel/') && link.href.includes('#pricing'))
