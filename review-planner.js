@@ -223,9 +223,6 @@ if (currentParams.toString()) {
       return
     }
 
-    console.log('🚀 ~ link passed:', link)
-    console.log('🚀 ~ link.href:', link.href)
-
     try {
       const url = new URL(link.href, window.location.origin)
 
