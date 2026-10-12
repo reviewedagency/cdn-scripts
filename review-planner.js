@@ -582,7 +582,8 @@ const processUserData = async fId => {
           localStorage.removeItem('fId')
           $('.home-preview-form').hide()
           if (funnelDataSyncEnabled) {
-            location.href = `/funnel/proposal/${location.search}`
+            // location.href = `/funnel/proposal/${location.search}`
+            location.href = 'https://calendly.com/reviewplanner/15min'
           }
         }
       })
@@ -626,7 +627,8 @@ if (businessName) {
           processUserData(fId)
         } else {
           if (funnelDataSyncEnabled) {
-            location.href = `/funnel/proposal/${location.search}`
+            // location.href = `/funnel/proposal/${location.search}`
+            location.href = 'https://calendly.com/reviewplanner/15min'
           }
         }
       })
